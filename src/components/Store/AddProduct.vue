@@ -156,7 +156,7 @@
           label-for="keywords-input"
         >
           <b-input-group
-            v-for="(keyword, index) in newProduct.keywords"
+            v-for="index in newProduct.keywords"
             :key="index"
           >
             <b-form-input
@@ -251,6 +251,7 @@ export default {
     'star-rating': StarRating,
   },
   props: {
+  	 onAddProduct: Function,
     categories: Array,
     colors: Array,
   },
@@ -275,7 +276,8 @@ export default {
       this.newProduct.images = fileNames;
     },
     submitNewProduct() {
-      this.$store.dispatch('saveProduct', this.newProduct);
+      // this.$store.dispatch('saveProduct', this.newProduct);
+	    this.onAddProduct(this.newProduct);
     },
     onReset() {
       this.newProduct = {

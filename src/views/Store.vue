@@ -28,6 +28,7 @@
         <add-product
           :categories="categories"
           :colors="colors"
+          :onAddProduct="addNewProduct"
         />
       </div>
       <div class="col-4">
@@ -35,6 +36,7 @@
           :categories="categories"
           :colors="colors"
           :current-product="product"
+          :on-save-edit-product="saveEditProduct"
         />
       </div>
     </div>
@@ -68,6 +70,12 @@ export default {
     ...mapState(['categories', 'products', 'product']),
   },
   methods: {
+  	addNewProduct(product) {
+		  this.$store.dispatch('saveProduct', product);
+	  },
+	  saveEditProduct(product) {
+		  this.$store.dispatch('saveEditProduct', product, this.idProduct);
+	  },
     onSetEditProduct() {
       this.$store.dispatch('getProduct', this.idProduct);
     },

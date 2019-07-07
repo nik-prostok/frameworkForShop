@@ -2,7 +2,7 @@
   <div class="add-product container">
     <h1>Редактор товара</h1>
     <b-form
-      @submit="submitEditProduct"
+      @submit="onSave(editProduct)"
       @reset="onReset"
     >
       <b-card
@@ -189,7 +189,7 @@
           label-for="keywords-input"
         >
           <b-input-group
-            v-for="(keyword, index) in editProduct.keywords"
+            v-for="index in editProduct.keywords"
             :key="index"
           >
             <b-form-input
@@ -258,7 +258,7 @@
       <b-button
         variant="success"
         class="m-1"
-        @click="submitEditProduct"
+        @click="onSaveEditProduct(editProduct)"
       >
         Сохранить
       </b-button>
@@ -284,6 +284,7 @@ export default {
     'star-rating': StarRating,
   },
   props: {
+    onSaveEditProduct: Function,
     categories: Array,
     colors: Array,
     currentProduct: {
@@ -303,7 +304,7 @@ export default {
   },
   data() {
     return {
-        uploadedFile: [],
+      uploadedFile: [],
     };
   },
   computed: {
@@ -318,12 +319,12 @@ export default {
     onUpload(fileNames) {
       this.uploadedFile = fileNames;
     },
-    submitEditProduct() {
-        this.uploadedFile.forEach(file => {
-            this.editProduct.images.push(file);
-        })
-        this.uploadedFile = [];
-        this.$store.dispatch('saveEditProduct', this.editProduct, '5d1b7acb3153da20d403665e');
+			 onEdit() {
+      this.uploadedFile.forEach((file) => {
+        this.editProduct.images.push(file);
+      });
+      this.uploadedFile = [];
+      this.onSaveEditProduct(this.editProduct);
     },
     onReset() {
       this.editProduct = {
