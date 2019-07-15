@@ -9,6 +9,7 @@ import config from '../config.json';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+	strict: true,
   state: {
     products: [],
     categories: [],
@@ -102,8 +103,8 @@ export default new Vuex.Store({
       const { data } = await Axios.get(`${config.api}/categories`);
       context.commit('setCategories', data);
     },
-    saveCategories: async (context, category) => {
-      const { data } = await Axios.post(`${config.api}/categories`, { category });
+    saveCategory: async (context, category) => {
+      const { data } = await Axios.post(`${config.api}/categories`, category);
       if (data.status === 200) {
         context.commit('addCategory', category);
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="add-product container">
+  <div class="add-product">
     <h1>Редактор товара</h1>
     <b-form
       @submit="onSave(editProduct)"
