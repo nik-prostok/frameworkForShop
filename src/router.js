@@ -12,5 +12,15 @@ export default new Router({
       name: 'store',
       component: () => import('./views/Store.vue'),
     },
+	   {
+	  	  path: '/dashboard',
+		    name: 'dashboard',
+		    component: () => import('./views/Dashboard.view.vue'),
+	   },
+	   {
+	   	 path: '/dashboard/product_add',
+		    name: 'product_add',
+		    component: () => import('./views/ProductAddDash.vue'),
+	   },
   ],
 });
