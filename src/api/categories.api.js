@@ -1,8 +1,8 @@
 import api from './api';
-import config from "../../config";
+import config from '../../config';
 
 export default {
-	getCategories(){
-		return api().get(`${config.api}/categories`)
-	}
-}
+  getCategories() {
+    return api().get(`${config.api}/categories`);
+  },
+};

@@ -1,20 +1,20 @@
 <template>
-  <div class="list-products container">
+  <div class="list-products container mt-3">
     <b-row v-if="products.length !== 0">
-      <b-col
+      <div
         v-for="product in products"
         :key="product._id"
+        class="m-2"
       >
         <product
           :id="product._id"
           style="max-width: 15rem;"
-          class="m-3"
           :title-product="product.title"
           :avl-count="product.availableQuantity"
           :main-image="product.images[0]"
           :rating-product="product.rating"
         />
-      </b-col>
+      </div>
     </b-row>
     <b-row
       v-else
@@ -27,24 +27,32 @@
 
 
 <script>
-import Product from './Product.vue';
+import { mapState } from 'vuex';
+import ProductAdmin from './ProductAdmin.vue';
 
 export default {
-  name: 'ListProducts',
+  name: 'ListProductsForAdmin',
   components: {
-    product: Product,
-  },
-  props: {
-    verticalList: Boolean,
-    products: {
-      type: Array,
-    },
+    product: ProductAdmin,
   },
   data() {
-    return {};
+    return {
+
+    };
   },
-  computed: {},
-  mounted() {},
-  methods: {},
+  computed: {
+    ...mapState({
+      products: state => state.products.products,
+    }),
+  },
+  mounted() {
+    this.$store.dispatch('products/getAllProducts');
+  },
+  methods: {
+    update() {
+      console.log('UPDATE PRODUCTS');
+      this.$store.dispatch('getProducts');
+    },
+  },
 };
 </script>

@@ -1,27 +1,76 @@
 <template>
- <div id="main-dashboard">
-	 <b-navbar type="dark" variant="dark">
-		 <b-navbar-nav>
-			 <b-nav-item>ShopSystemDev</b-nav-item>
+  <div id="main-dashboard">
+    <b-navbar
+      type="dark"
+      variant="dark"
+    >
+      <b-navbar-nav>
+        <b-nav-item>ShopSystemDev</b-nav-item>
 
-			 <b-nav-item-dropdown text="Products" right>
-				 <b-dropdown-item>Add product</b-dropdown-item>
-				 <b-dropdown-item>Edit product</b-dropdown-item>
-			 </b-nav-item-dropdown>
-
-		 </b-navbar-nav>
-	 </b-navbar>
-	 <div class="content">
-		 <router-link to="/">Blog</router-link>
-	 </div>
-
- </div>
+        <b-nav-item-dropdown
+          text="Products"
+          right
+        >
+          <b-dropdown-item>Add product</b-dropdown-item>
+          <b-dropdown-item>Edit product</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+    </b-navbar>
+    <div class="content">
+      <b-row class="m-3">
+        <b-col>
+          <b-row>
+            <h5>
+              Товары
+            </h5>
+          </b-row>
+          <b-row>
+            <list-products-for-admin />
+          </b-row>
+        </b-col>
+        <b-col v-if="!showEditProduct">
+          <b-row>
+            <h5>
+              Добавить товар
+            </h5>
+          </b-row>
+          <b-row class="m-3">
+            <add-product />
+          </b-row>
+        </b-col>
+        <b-col v-else>
+          <b-row>
+            <h5>
+              Редактировать товар
+            </h5>
+          </b-row>
+          <b-row class="m-3">
+            <edit-product />
+          </b-row>
+        </b-col>
+      </b-row>
+    </div>
+  </div>
 </template>
 
 <script>
-	export default {
-		name: "Dashboard.view"
-	}
+import ListProductsForAdmin from '../components/Products/ListProductsForAdmin.vue';
+import AddProduct from '../components/Products/AddProduct.vue';
+import EditProduct from '../components/Products/EditProduct.vue';
+
+export default {
+  name: 'DashboardView',
+  components: {
+    AddProduct,
+    ListProductsForAdmin,
+    EditProduct,
+  },
+  data() {
+    return {
+      showEditProduct: false,
+    };
+  },
+};
 </script>
 
 <style scoped>

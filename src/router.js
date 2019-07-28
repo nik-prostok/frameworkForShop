@@ -17,10 +17,5 @@ export default new Router({
 		    name: 'dashboard',
 		    component: () => import('./views/Dashboard.view.vue'),
 	   },
-	   {
-	   	 path: '/dashboard/product_add',
-		    name: 'product_add',
-		    component: () => import('./views/ProductAddDash.vue'),
-	   },
   ],
 });

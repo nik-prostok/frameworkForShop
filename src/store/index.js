@@ -4,15 +4,15 @@ import products from './modules/products';
 import categories from './modules/categories';
 import createLogger from '../plugins/logger';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-const debug = process.env.NODE_ENV !== 'production'
+const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
-	modules: {
-		products,
-		categories,
-	},
-	strict: debug,
-	plugins: debug ? [createLogger()] : []
-})
+  modules: {
+    products,
+    categories,
+  },
+  strict: debug,
+  plugins: debug ? [createLogger()] : [],
+});

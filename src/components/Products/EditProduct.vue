@@ -258,7 +258,7 @@
       <b-button
         variant="success"
         class="m-1"
-        @click="onSaveEditProduct(editProduct)"
+        @click="onEdit(editProduct)"
       >
         Сохранить
       </b-button>
@@ -319,12 +319,12 @@ export default {
     onUpload(fileNames) {
       this.uploadedFile = fileNames;
     },
-			 onEdit() {
+    onEdit() {
       this.uploadedFile.forEach((file) => {
         this.editProduct.images.push(file);
       });
       this.uploadedFile = [];
-      this.onSaveEditProduct(this.editProduct);
+      this.$store.dispatch('saveProduct', this.editProduct);
     },
     onReset() {
       this.editProduct = {

@@ -9,7 +9,7 @@ import config from '../config.json';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	strict: true,
+  strict: true,
   state: {
     products: [],
     categories: [],
