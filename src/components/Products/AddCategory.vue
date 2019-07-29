@@ -33,7 +33,7 @@
             v-model="newCategory.parentCategory"
             value-field="_id"
             text-field="title"
-            :options="categoriesWithoutNewCat"
+            :options="categories"
             required
           />
         </b-form-group>
@@ -72,15 +72,7 @@ export default {
       },
     };
   },
-  computed: {
-    categoriesWithoutNewCat() {
-      return this.categories.filter((cat) => {
-        if (cat.title !== 'Новая категория') {
-          return true;
-        } return false;
-      });
-    },
-  },
+  computed: {},
   mounted() {},
   methods: {
     submitNewCategory() {

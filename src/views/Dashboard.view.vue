@@ -29,7 +29,7 @@
           </b-row>
         </b-col>
         <b-col v-if="!showEditProduct">
-          <b-row>
+          <b-row class="m-3">
             <h5>
               Добавить товар
             </h5>
@@ -39,7 +39,7 @@
           </b-row>
         </b-col>
         <b-col v-else>
-          <b-row>
+          <b-row class="m-3">
             <h5>
               Редактировать товар
             </h5>
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex';
 import ListProductsForAdmin from '../components/Products/ListProductsForAdmin.vue';
 import AddProduct from '../components/Products/AddProduct.vue';
 import EditProduct from '../components/Products/EditProduct.vue';
@@ -66,9 +68,18 @@ export default {
     EditProduct,
   },
   data() {
-    return {
-      showEditProduct: false,
-    };
+    return {};
+  },
+  computed: {
+    ...mapState({
+      idEditProduct: state => state.products.idEditProduct,
+    }),
+    showEditProduct() {
+      if (this.idEditProduct === null) {
+        return false;
+      }
+      return true;
+    },
   },
 };
 </script>

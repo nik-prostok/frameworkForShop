@@ -19,12 +19,25 @@ const actions = {
         commit('setCategories', res.data);
       });
   },
+  async getCategoriesWithoutNewCat({ commit }) {
+    await category.getCategories()
+      .then((res) => {
+        commit('setCategoriesWithoutNewCat', res.data.filter((cat) => {
+          if (cat.title !== 'Новая категория') {
+            return true;
+          } return false;
+        }));
+      });
+  },
 };
 
 // mutations
 const mutations = {
   setCategories(state, categories) {
     state.categories = categories;
+  },
+  setCategoriesWithoutNewCat(state, categories) {
+    state.categoriesWithoutNewCat = categories;
   },
 };
 

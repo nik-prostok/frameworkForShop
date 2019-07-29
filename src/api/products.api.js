@@ -5,4 +5,7 @@ export default {
   getProducts() {
     return api().get(`${config.api}/products`);
   },
+  getProduct(idProduct) {
+    return api().get(`${config.api}/products/${idProduct}`);
+  },
 };

@@ -160,7 +160,7 @@
           label-for="keywords-input"
         >
           <b-input-group
-            v-for="index in newProduct.keywords"
+            v-for="(keyword, index) in newProduct.keywords"
             :key="index"
           >
             <b-form-input
@@ -245,6 +245,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import UploadFile from '../UploadFile.vue';
 import StarRating from '../Rating/star-rating.vue';
 import AddCategory from './AddCategory.vue';
@@ -257,7 +258,6 @@ export default {
     'add-category': AddCategory,
   },
   props: {
-    categories: Array,
     colors: Array,
   },
   data() {
@@ -281,13 +281,15 @@ export default {
     };
   },
   computed: {
-    categoriesWithoutNewCat() {
-      return this.categories.filter((cat) => {
-        if (cat.title !== 'Новая категория') {
-          return true;
-        } return false;
-      });
-    },
+    ...mapState({
+      currentEditProduct: state => state.products.currentEditProduct,
+      categories: state => state.categories.categories,
+      categoriesWithoutNewCat: state => state.categories.categoriesWithoutNewCat,
+    }),
+  },
+  mounted() {
+    this.$store.dispatch('categories/getAllCategories');
+    this.$store.dispatch('categories/getCategoriesWithoutNewCat');
   },
   methods: {
     onUpload(fileNames) {

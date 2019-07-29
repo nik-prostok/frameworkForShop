@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     update() {
-      this.$store.dispatch('getAllProducts');
+      this.$store.dispatch('products/getAllProducts');
     },
   },
 };

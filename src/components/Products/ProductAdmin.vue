@@ -18,7 +18,7 @@
           <b-col class="m-1">
             <b-button
               variant="primary"
-              @click="Edit(id)"
+              @click="editProduct"
             >
               Ред.
             </b-button>
@@ -26,7 +26,7 @@
           <b-col class="m-1">
             <b-button
               variant="danger"
-              @click="Delete(id)"
+              @click="deleteProduct"
             >
               Удалить
             </b-button>
@@ -72,7 +72,12 @@ export default {
   },
   computed: {},
   mounted() {},
-  methods: {},
+  methods: {
+    editProduct() {
+      this.$store.commit('products/setIdEditProduct', this.id);
+      this.$store.dispatch('products/getProduct');
+    },
+  },
 };
 </script>
 

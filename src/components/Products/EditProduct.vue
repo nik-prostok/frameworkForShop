@@ -1,6 +1,5 @@
 <template>
-  <div class="add-product">
-    <h1>Редактор товара</h1>
+  <div class="edit-product">
     <b-form
       @submit="onSave(editProduct)"
       @reset="onReset"
@@ -189,7 +188,7 @@
           label-for="keywords-input"
         >
           <b-input-group
-            v-for="index in editProduct.keywords"
+            v-for="(keyword, index) in editProduct.keywords"
             :key="index"
           >
             <b-form-input
@@ -274,8 +273,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import UploadFile from '../UploadFile.vue';
 import StarRating from '../Rating/star-rating.vue';
+import { deepCopy } from '../../util';
 
 export default {
   name: 'EditProduct',
@@ -284,12 +285,12 @@ export default {
     'star-rating': StarRating,
   },
   props: {
-    onSaveEditProduct: Function,
-    categories: Array,
     colors: Array,
-    currentProduct: {
-      type: Object,
-      default: () => ({
+  },
+  data() {
+    return {
+      uploadedFile: [],
+      /* editProduct: {
         title: '',
         description: '',
         price: 0,
@@ -299,21 +300,21 @@ export default {
         keywords: [''],
         images: [],
         color: '',
-      }),
-    },
-  },
-  data() {
-    return {
-      uploadedFile: [],
+      }, */
     };
+  },
+  mounted() {
+    this.$store.dispatch('products/getProduct');
+    this.$store.dispatch('categories/getAllCategories');
   },
   computed: {
     editProduct() {
-      if (this.$attrs.editProduct != null) {
-        return this.$attrs.editProduct;
-      }
-      return this.currentProduct;
+      return deepCopy(this.currentEditProduct);
     },
+    ...mapState({
+      currentEditProduct: state => state.products.currentEditProduct,
+      categories: state => state.categories.categories,
+    }),
   },
   methods: {
     onUpload(fileNames) {

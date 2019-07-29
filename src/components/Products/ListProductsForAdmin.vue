@@ -48,11 +48,6 @@ export default {
   mounted() {
     this.$store.dispatch('products/getAllProducts');
   },
-  methods: {
-    update() {
-      console.log('UPDATE PRODUCTS');
-      this.$store.dispatch('getProducts');
-    },
-  },
+  methods: {},
 };
 </script>
