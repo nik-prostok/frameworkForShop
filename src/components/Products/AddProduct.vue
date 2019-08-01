@@ -55,7 +55,6 @@
 
       <add-category
         v-if="newProduct.category === '5d234d601c9d440000a97891'"
-        :categories="categoriesWithoutNewCat"
       />
 
       <b-card
@@ -248,7 +247,7 @@
 import { mapState } from 'vuex';
 import UploadFile from '../UploadFile.vue';
 import StarRating from '../Rating/star-rating.vue';
-import AddCategory from './AddCategory.vue';
+import AddCategory from '../Categories/AddCategory.vue';
 
 export default {
   name: 'AddProduct',
@@ -284,12 +283,10 @@ export default {
     ...mapState({
       currentEditProduct: state => state.products.currentEditProduct,
       categories: state => state.categories.categories,
-      categoriesWithoutNewCat: state => state.categories.categoriesWithoutNewCat,
     }),
   },
   mounted() {
     this.$store.dispatch('categories/getAllCategories');
-    this.$store.dispatch('categories/getCategoriesWithoutNewCat');
   },
   methods: {
     onUpload(fileNames) {

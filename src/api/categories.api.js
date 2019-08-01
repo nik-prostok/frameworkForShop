@@ -5,4 +5,7 @@ export default {
   getCategories() {
     return api().get(`${config.api}/categories`);
   },
+  saveCategory(category) {
+    return api().post(`${config.api}/categories`, category);
+  },
 };

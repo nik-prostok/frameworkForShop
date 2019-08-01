@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import category from '../../api/categories.api';
 
 // initial state
@@ -7,12 +8,18 @@ const state = {
 };
 
 // getters
-const getters = {
-  categories: state => state.categories,
-};
+const getters = {};
 
 // actions
 const actions = {
+  async saveCategory({ commit }, category) {
+    await category.saveCategory(category)
+      .then((res) => {
+        if (res.data.status === 200) {
+          commit('addNewCategory', res.data);
+        }
+      });
+  },
   async getAllCategories({ commit }) {
     await category.getCategories()
       .then((res) => {
@@ -33,6 +40,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  addNewCategory(state, category) {
+    state.categories.push(category);
+  },
   setCategories(state, categories) {
     state.categories = categories;
   },

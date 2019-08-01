@@ -33,7 +33,7 @@
             v-model="newCategory.parentCategory"
             value-field="_id"
             text-field="title"
-            :options="categories"
+            :options="categoriesWithoutNewCat"
             required
           />
         </b-form-group>
@@ -58,12 +58,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'AddCategory',
-  props: {
-    onAddCategory: Function,
-    categories: Array,
-  },
   data() {
     return {
       newCategory: {
@@ -72,11 +70,17 @@ export default {
       },
     };
   },
-  computed: {},
-  mounted() {},
+  computed: {
+    ...mapState({
+      categoriesWithoutNewCat: state => state.categories.categoriesWithoutNewCat,
+    }),
+  },
+  mounted() {
+    this.$store.dispatch('categories/getCategoriesWithoutNewCat');
+  },
   methods: {
     submitNewCategory() {
-      this.$store.dispatch('saveCategory', this.newCategory)
+      this.$store.dispatch('categories/saveCategory', this.newCategory)
         .then();
     },
     onReset() {

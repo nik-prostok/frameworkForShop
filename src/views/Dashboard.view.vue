@@ -1,21 +1,5 @@
 <template>
   <div id="main-dashboard">
-    <b-navbar
-      type="dark"
-      variant="dark"
-    >
-      <b-navbar-nav>
-        <b-nav-item>ShopSystemDev</b-nav-item>
-
-        <b-nav-item-dropdown
-          text="Products"
-          right
-        >
-          <b-dropdown-item>Add product</b-dropdown-item>
-          <b-dropdown-item>Edit product</b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-    </b-navbar>
     <div class="content">
       <b-row class="m-3">
         <b-col>
