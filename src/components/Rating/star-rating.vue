@@ -1,5 +1,9 @@
 <template>
-  <div :class="['vue-star-rating', {'vue-star-rating-rtl':rtl}, {'vue-star-rating-inline': inline}]">
+  <div
+    :class="['vue-star-rating',
+             {'vue-star-rating-rtl':rtl},
+             {'vue-star-rating-inline': inline}]"
+  >
     <div
       class="vue-star-rating"
       @mouseleave="resetRating"
@@ -141,7 +145,8 @@ export default {
   },
   computed: {
     formattedRating() {
-      return (this.fixedPoints === null) ? this.currentRating : this.currentRating.toFixed(this.fixedPoints);
+      return (this.fixedPoints === null)
+        ? this.currentRating : this.currentRating.toFixed(this.fixedPoints);
     },
     shouldRound() {
       return this.ratingSelected || this.roundStartRating;
@@ -168,7 +173,8 @@ export default {
       if (!this.readOnly) {
         const position = (this.rtl) ? (100 - $event.position) / 100 : $event.position / 100;
         this.currentRating = (($event.id + position) - 1).toFixed(2);
-        this.currentRating = (this.currentRating > this.maxRating) ? this.maxRating : this.currentRating;
+        this.currentRating = (this.currentRating > this.maxRating)
+          ? this.maxRating : this.currentRating;
         this.createStars();
         if (persist) {
           this.selectedRating = this.currentRating;
@@ -189,6 +195,7 @@ export default {
       if (round) {
         this.round();
       }
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.maxRating; i++) {
         let level = 0;
         if (i < this.currentRating) {

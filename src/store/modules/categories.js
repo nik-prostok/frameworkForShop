@@ -1,5 +1,5 @@
-/* eslint-disable no-shadow */
-import category from '../../api/categories.api';
+/* eslint-disable no-shadow,no-param-reassign */
+import categories from '../../api/categories.api';
 
 // initial state
 const state = {
@@ -13,7 +13,7 @@ const getters = {};
 // actions
 const actions = {
   async saveCategory({ commit }, category) {
-    await category.saveCategory(category)
+    await categories.saveCategory(category)
       .then((res) => {
         if (res.data.status === 200) {
           commit('addNewCategory', res.data);
@@ -21,13 +21,13 @@ const actions = {
       });
   },
   async getAllCategories({ commit }) {
-    await category.getCategories()
+    await categories.getCategories()
       .then((res) => {
         commit('setCategories', res.data);
       });
   },
   async getCategoriesWithoutNewCat({ commit }) {
-    await category.getCategories()
+    await categories.getCategories()
       .then((res) => {
         commit('setCategoriesWithoutNewCat', res.data.filter((cat) => {
           if (cat.title !== 'Новая категория') {

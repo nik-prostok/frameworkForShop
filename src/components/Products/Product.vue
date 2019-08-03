@@ -7,6 +7,7 @@
     >
       <b-card-body>
         <b-row>
+
           <img
             :src="mainImage"
             style="max-height: 7rem;"
@@ -45,7 +46,7 @@ import StarRating from '../Rating/star-rating.vue';
 export default {
   name: 'Product',
   components: {
-    'star-rating': StarRating,
+    StarRating,
   },
   props: {
     id: String,

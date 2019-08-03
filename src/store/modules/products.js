@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign,no-shadow */
-import product from '../../api/products.api';
+import products from '../../api/products.api';
 
 // initial state
 const state = {
@@ -18,18 +18,38 @@ const getters = {
 // actions
 const actions = {
   async getAllProducts({ commit }) {
-    await product.getProducts()
+    await products.getProducts()
       .then((res) => {
         commit('setProducts', res.data);
       });
   },
   async getProduct({ state, commit }) {
     if (state.idEditProduct != null) {
-      await product.getProduct(state.idEditProduct)
+      await products.getProduct(state.idEditProduct)
         .then((res) => {
           commit('setEditProduct', res.data);
         });
     }
+  },
+  async saveProduct({ commit }, product) {
+    await products.saveProduct(product)
+      .then((res) => {
+        commit('addProduct', res.data);
+      });
+  },
+  async saveEditProduct({ commit }, product, idProduct) {
+    // eslint-disable-next-line no-underscore-dangle
+    delete product._id;
+    await products.saveEditProduct(product, idProduct)
+      .then((res) => {
+        commit('updateProduct', res.data, idProduct);
+      });
+  },
+  async deleteProduct({ commit }, idProduct) {
+    await products.deleteProduct(idProduct)
+      .then(() => {
+        commit('deleteProduct', idProduct);
+      });
   },
 };
 
@@ -41,8 +61,30 @@ const mutations = {
   setIdEditProduct(state, idProduct) {
     state.idEditProduct = idProduct;
   },
-  setEditProduct: (state, productEdit) => {
-    state.currentEditProduct = productEdit;
+  setEditProduct: (state) => {
+    state.products.forEach((product, index, arrayProducts) => {
+      // eslint-disable-next-line no-underscore-dangle
+      if (product._id === state.idEditProduct) {
+        state.currentEditProduct = product;
+      }
+    });
+  },
+  addProduct: (state, product) => {
+    state.products.push(product);
+  },
+  updateProduct: (state, product, id) => {
+    state.products = [
+      ...state.products.filter(element => element.id !== id),
+      product,
+    ];
+  },
+  deleteProduct(state, idProduct) {
+    state.products.forEach((product, index, arrayProducts) => {
+      // eslint-disable-next-line no-underscore-dangle
+      if (product._id === idProduct) {
+        arrayProducts.splice(index, 1);
+      }
+    });
   },
 };
 

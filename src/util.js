@@ -1,24 +1,24 @@
 /**
-	* Get the first item that pass the test
-	* by second argument function
-	*
-	* @param {Array} list
-	* @param {Function} f
-	* @return {*}
-	*/
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
 export function find(list, f) {
   return list.filter(f)[0];
 }
 
 /**
-	* Deep copy the given object considering circular structure.
-	* This function caches all nested objects and its copies.
-	* If it detects circular structure, use cached copy to avoid infinite loop.
-	*
-	* @param {*} obj
-	* @param {Array<Object>} cache
-	* @return {*}
-	*/
+ * * Deep copy the given object considering circular structure.
+ * This function caches all nested objects and its copies.
+ * If it detects circular structure, use cached copy to avoid infinite loop.
+ *
+ * @param {*} obj
+ * @param {Array<Object>} cache
+ * @return {*}
+ */
 export function deepCopy(obj, cache = []) {
   // just return if obj is immutable value
   if (obj === null || typeof obj !== 'object') {
@@ -47,8 +47,8 @@ export function deepCopy(obj, cache = []) {
 }
 
 /**
-	* forEach for object
-	*/
+ * forEach for object
+ */
 export function forEachValue(obj, fn) {
   Object.keys(obj).forEach(key => fn(obj[key], key));
 }

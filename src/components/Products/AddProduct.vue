@@ -55,6 +55,7 @@
 
       <add-category
         v-if="newProduct.category === '5d234d601c9d440000a97891'"
+        :on-success-add="addCategory"
       />
 
       <b-card
@@ -252,9 +253,9 @@ import AddCategory from '../Categories/AddCategory.vue';
 export default {
   name: 'AddProduct',
   components: {
-    'upload-file': UploadFile,
-    'star-rating': StarRating,
-    'add-category': AddCategory,
+    UploadFile,
+    StarRating,
+    AddCategory,
   },
   props: {
     colors: Array,
@@ -281,7 +282,6 @@ export default {
   },
   computed: {
     ...mapState({
-      currentEditProduct: state => state.products.currentEditProduct,
       categories: state => state.categories.categories,
     }),
   },
@@ -289,12 +289,24 @@ export default {
     this.$store.dispatch('categories/getAllCategories');
   },
   methods: {
+    addCategory(idCategory) {
+      this.$store.dispatch('categories/getAllCategories')
+        .then(() => {
+          this.newProduct.category = idCategory;
+        });
+    },
     onUpload(fileNames) {
       console.log(fileNames);
       this.newProduct.images = fileNames;
     },
     submitNewProduct() {
-      this.$store.dispatch('saveProduct', this.newProduct);
+      this.$store.dispatch('products/saveProduct', this.newProduct)
+        .then(() => {
+          this.makeToast('Продукт был успешно добавлен', 'Успешно', 'success');
+        })
+        .catch(() => {
+          this.makeToast('Произошла ошибка во время выполнения операции', 'Ошибка', 'danger');
+        });
     },
     onReset() {
       this.newProduct = {
@@ -308,6 +320,13 @@ export default {
         images: [],
         color: '',
       };
+    },
+    makeToast(text, title, variant = null) {
+      this.$bvToast.toast(text, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+      });
     },
     addFieldForKeyword() {
       this.newProduct.keywords.push('');

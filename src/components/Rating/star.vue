@@ -132,8 +132,11 @@ export default {
       return `url(#${this.grad})`;
     },
     getSize() {
+      // eslint-disable-next-line max-len
       // Adjust star size when rounded corners are set with no border, to account for the 'hidden' border
+      // eslint-disable-next-line radix,max-len
       const size = (this.roundedCorners && this.borderWidth <= 0) ? parseInt(this.size) - parseInt(this.border) : this.size;
+      // eslint-disable-next-line radix
       return parseInt(size) + parseInt(this.border);
     },
     getFill() {
@@ -189,6 +192,7 @@ export default {
       return Math.random().toString(36).substring(7);
     },
     calculatePoints() {
+      // eslint-disable-next-line max-len
       this.starPoints = this.starPoints.map(point => ((this.size / this.maxSize) * point) + (this.border * 1.5));
     },
   },

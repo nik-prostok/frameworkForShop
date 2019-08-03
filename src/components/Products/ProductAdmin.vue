@@ -7,12 +7,16 @@
     >
       <b-card-body>
         <b-row>
-          <img
-            :src="mainImage"
-            style="max-height: 7rem;"
-            alt=""
-            class="m-2"
-          >
+          <lingallery
+            v-if="images.length !== 0"
+            :iid.sync="currentId"
+            :width="250"
+            :height="150"
+            :items="imagesForProduct"
+          />
+          <div v-else>
+            <p>Нет фото</p>
+          </div>
         </b-row>
         <b-row>
           <b-col class="m-1">
@@ -53,29 +57,55 @@
 </template>
 
 <script>
+import Lingallery from 'lingallery';
 import StarRating from '../Rating/star-rating.vue';
 
 export default {
   name: 'ProductAdmin',
   components: {
-    'star-rating': StarRating,
+    StarRating,
+    Lingallery,
   },
   props: {
     id: String,
     titleProduct: String,
     avlCount: Number,
-    mainImage: String,
+    images: Array,
     ratingProduct: Number,
   },
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    imagesForProduct() {
+      return this.images.map(image => ({
+        src: image,
+        thumbnail: image,
+      }));
+    },
+  },
   mounted() {},
   methods: {
+    deleteProduct() {
+      this.$store.dispatch('products/deleteProduct', this.id)
+        .then(() => {
+          this.$store.dispatch('products/getAllProducts');
+          this.makeToast('Продукт был успешно удален', 'Успешно', 'success');
+        })
+        .catch(() => {
+          this.makeToast('Произошла ошибка во время выполнения операции', 'Ошибка', 'danger');
+        });
+    },
+    makeToast(text, title, variant = null) {
+      this.$bvToast.toast(text, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+      });
+    },
     editProduct() {
       this.$store.commit('products/setIdEditProduct', this.id);
-      this.$store.dispatch('products/getProduct');
+      this.$store.commit('products/setEditProduct');
     },
   },
 };

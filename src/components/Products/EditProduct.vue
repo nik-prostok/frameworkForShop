@@ -53,6 +53,11 @@
         </b-form-group>
       </b-card>
 
+      <add-category
+        v-if="editProduct.category === '5d234d601c9d440000a97891'"
+        :on-success-add="addCategory"
+      />
+
       <b-card
         class="mt-4"
         bg-variant="light"
@@ -276,13 +281,14 @@
 import { mapState } from 'vuex';
 import UploadFile from '../UploadFile.vue';
 import StarRating from '../Rating/star-rating.vue';
-import { deepCopy } from '../../util';
+import AddCategory from '../Categories/AddCategory.vue';
 
 export default {
   name: 'EditProduct',
   components: {
-    'upload-file': UploadFile,
-    'star-rating': StarRating,
+    UploadFile,
+    StarRating,
+    AddCategory,
   },
   props: {
     colors: Array,
@@ -290,33 +296,27 @@ export default {
   data() {
     return {
       uploadedFile: [],
-      /* editProduct: {
-        title: '',
-        description: '',
-        price: 0,
-        rating: 0,
-        category: '',
-        availableQuantity: 0,
-        keywords: [''],
-        images: [],
-        color: '',
-      }, */
     };
   },
   mounted() {
-    this.$store.dispatch('products/getProduct');
     this.$store.dispatch('categories/getAllCategories');
+    this.$store.commit('products/setEditProduct');
+    // this.editProduct = deepCopy(this.currentEditProduct);
   },
   computed: {
-    editProduct() {
-      return deepCopy(this.currentEditProduct);
-    },
     ...mapState({
-      currentEditProduct: state => state.products.currentEditProduct,
+      editProduct: state => state.products.currentEditProduct,
+      idEditProduct: state => state.products.idEditProduct,
       categories: state => state.categories.categories,
     }),
   },
   methods: {
+    addCategory(idCategory) {
+      this.$store.dispatch('categories/getAllCategories')
+        .then(() => {
+          this.editProduct.category = idCategory;
+        });
+    },
     onUpload(fileNames) {
       this.uploadedFile = fileNames;
     },
@@ -325,7 +325,23 @@ export default {
         this.editProduct.images.push(file);
       });
       this.uploadedFile = [];
-      this.$store.dispatch('saveProduct', this.editProduct);
+      // eslint-disable-next-line no-underscore-dangle
+      console.log(this.idEditProduct);
+      this.$store.dispatch('products/saveEditProduct', this.editProduct, this.idEditProduct)
+        .then(() => {
+          this.$store.dispatch('products/getAllProducts');
+          this.makeToast('Продукт был успешно обновлен', 'Успешно', 'success');
+        })
+        .catch(() => {
+          this.makeToast('Произошла ошибка во время выполнения операции', 'Ошибка', 'danger');
+        });
+    },
+    makeToast(text, title, variant = null) {
+      this.$bvToast.toast(text, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+      });
     },
     onReset() {
       this.editProduct = {

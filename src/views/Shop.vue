@@ -1,6 +1,6 @@
 <template>
   <div id="store">
-    <list-products/>
+    <list-products />
   </div>
 </template>
 
@@ -15,8 +15,8 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
   computed: {},
+  mounted() {},
   methods: {},
 };
 </script>

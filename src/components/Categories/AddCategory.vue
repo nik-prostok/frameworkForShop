@@ -62,11 +62,17 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'AddCategory',
+  props: {
+    onSuccessAdd: {
+      type: Function,
+      default: () => null,
+    },
+  },
   data() {
     return {
       newCategory: {
         title: '',
-        parentCategory: '',
+        parentCategory: '5d40262bf7499327a4fdb0a1',
       },
     };
   },
@@ -81,12 +87,34 @@ export default {
   methods: {
     submitNewCategory() {
       this.$store.dispatch('categories/saveCategory', this.newCategory)
-        .then();
+        .then(() => {
+          this.$store.dispatch('categories/getCategoriesWithoutNewCat')
+            .then(() => {
+              // eslint-disable-next-line no-underscore-dangle
+              const lastIdProduct = this.categoriesWithoutNewCat.filter((cat) => {
+                if (cat.title === this.newCategory.title) {
+                  return true;
+                }
+                return false;
+              })[0]._id;
+              console.log(lastIdProduct);
+              this.onSuccessAdd(lastIdProduct);
+              this.makeToast('Категория была успешно создана', 'Успешно', 'success');
+            });
+        })
+        .catch(() => { this.makeToast('Произошла ошибка во время выполнения операции', 'Ошибка', 'danger'); });
+    },
+    makeToast(text, title, variant = null) {
+      this.$bvToast.toast(text, {
+        title,
+        autoHideDelay: 5000,
+        variant,
+      });
     },
     onReset() {
       this.newCategory = {
         title: '',
-        parentCategory: '',
+        parentCategory: '5d40262bf7499327a4fdb0a1',
       };
     },
   },

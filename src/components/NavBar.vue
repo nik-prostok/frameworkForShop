@@ -2,29 +2,52 @@
   <div id="navbar">
     <b-navbar
       type="dark"
-      variant="dark"
+      variant="info"
     >
       <b-navbar-nav>
-        <b-nav-item>ShopSystemDev</b-nav-item>
-
-        <b-nav-item-dropdown
-          text="Products"
-          right
-        >
-          <b-dropdown-item>Add product</b-dropdown-item>
-          <b-dropdown-item>Edit product</b-dropdown-item>
-        </b-nav-item-dropdown>
+        <b-nav-item>
+          Shop System
+        </b-nav-item>
+        <b-nav-item>
+          <router-link
+            class="default-link"
+            active-class="active"
+            exact-active-class="exact-active"
+            to="/dashboard/products"
+          >
+            Продукты
+          </router-link>
+        </b-nav-item>
+        <b-nav-item>
+          <router-link
+            class="default-link"
+            active-class="active"
+            exact-active-class="exact-active"
+            to="/dashboard/categories"
+          >
+            Категории
+          </router-link>
+        </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'NavBar',
 };
 </script>
 
 <style scoped>
-
+  .active {
+    color: black;
+  }
+  .exact-active {
+    color: gray;
+  }
+  .default-link{
+    color: azure;
+  }
 </style>

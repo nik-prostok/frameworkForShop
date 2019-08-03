@@ -1,5 +1,6 @@
 <template>
-  <div id="main-dashboard">
+  <div id="product-dashboard">
+    <nav-bar />
     <div class="content">
       <b-row class="m-3">
         <b-col>
@@ -19,17 +20,26 @@
             </h5>
           </b-row>
           <b-row class="m-3">
-            <add-product />
+            <add-product
+              :colors="colors"
+            />
           </b-row>
         </b-col>
         <b-col v-else>
           <b-row class="m-3">
             <h5>
+              <font-awesome-icon
+                icon="arrow-left"
+                style="font-size: 1.5rem;"
+                @click="$store.commit('products/setIdEditProduct', null);"
+              />
               Редактировать товар
             </h5>
           </b-row>
           <b-row class="m-3">
-            <edit-product />
+            <edit-product
+              :colors="colors"
+            />
           </b-row>
         </b-col>
       </b-row>
@@ -43,16 +53,20 @@ import { mapState } from 'vuex';
 import ListProductsForAdmin from '../components/Products/ListProductsForAdmin.vue';
 import AddProduct from '../components/Products/AddProduct.vue';
 import EditProduct from '../components/Products/EditProduct.vue';
+import NavBar from '../components/NavBar.vue';
 
 export default {
-  name: 'DashboardView',
+  name: 'ProductDashboard',
   components: {
     AddProduct,
     ListProductsForAdmin,
     EditProduct,
+    NavBar,
   },
   data() {
-    return {};
+    return {
+      colors: ['Черный', 'Белый', 'Красный'],
+    };
   },
   computed: {
     ...mapState({

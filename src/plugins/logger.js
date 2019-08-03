@@ -1,11 +1,10 @@
+/* eslint-disable no-use-before-define,no-unused-vars */
 import { deepCopy } from '../util';
 
 export default function createLogger({
-	                                     collapsed = true,
-	                                     filter = (mutation, stateBefore, stateAfter) => true,
-	                                     transformer = state => state,
-	                                     mutationTransformer = mut => mut,
-	                                     logger = console,
+  collapsed = true,
+  filter = (mutation, stateBefore, stateAfter) => true,
+  transformer = state => state, mutationTransformer = mut => mut, logger = console,
 } = {}) {
   return (store) => {
     let prevState = deepCopy(store.state);

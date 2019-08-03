@@ -11,7 +11,7 @@
           style="max-width: 15rem;"
           :title-product="product.title"
           :avl-count="product.availableQuantity"
-          :main-image="product.images[0]"
+          :images="product.images"
           :rating-product="product.rating"
         />
       </div>
