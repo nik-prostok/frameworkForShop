@@ -9,7 +9,6 @@
         <b-row>
           <lingallery
             v-if="images.length !== 0"
-            :iid.sync="currentId"
             :width="250"
             :height="150"
             :items="imagesForProduct"

@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign,no-shadow */
 import products from '../../api/products.api';
+import config from '../../../config.json';
 
 // initial state
 const state = {
@@ -70,6 +71,9 @@ const mutations = {
     });
   },
   addProduct: (state, product) => {
+    product.images.forEach((image, index, arr) => {
+      arr[index] = `${config.image}/${image}`;
+    })
     state.products.push(product);
   },
   updateProduct: (state, product, id) => {

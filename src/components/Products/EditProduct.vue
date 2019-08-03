@@ -318,6 +318,7 @@ export default {
         });
     },
     onUpload(fileNames) {
+      console.log(fileNames);
       this.uploadedFile = fileNames;
     },
     onEdit() {
