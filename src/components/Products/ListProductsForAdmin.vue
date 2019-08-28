@@ -11,7 +11,7 @@
           style="max-width: 15rem;"
           :title-product="product.title"
           :avl-count="product.availableQuantity"
-          :images="product.images"
+          :images="imagesURL(product.images)"
           :rating-product="product.rating"
         />
       </div>
@@ -29,6 +29,7 @@
 <script>
 import { mapState } from 'vuex';
 import ProductAdmin from './ProductAdmin.vue';
+import config from '../../../config';
 
 export default {
   name: 'ListProductsForAdmin',
@@ -48,6 +49,11 @@ export default {
   mounted() {
     this.$store.dispatch('products/getAllProducts');
   },
-  methods: {},
+  methods: {
+    imagesURL(images) {
+      console.log(images);
+      return images.map(image => `${config.image}/${image}`);
+    },
+  },
 };
 </script>

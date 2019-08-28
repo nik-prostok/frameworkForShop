@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign,no-shadow */
 import products from '../../api/products.api';
-import config from '../../../config.json';
 
 // initial state
 const state = {
@@ -38,12 +37,13 @@ const actions = {
         commit('addProduct', res.data);
       });
   },
-  async saveEditProduct({ commit }, product, idProduct) {
+  async saveEditProduct({ commit }, { editProduct, idProduct }) {
     // eslint-disable-next-line no-underscore-dangle
-    delete product._id;
-    await products.saveEditProduct(product, idProduct)
+    // delete payload.product._id;
+    console.log(idProduct);
+    await products.saveEditProduct(editProduct, idProduct)
       .then((res) => {
-        commit('updateProduct', res.data, idProduct);
+        commit('updateProduct', { product: res.data, id: idProduct });
       });
   },
   async deleteProduct({ commit }, idProduct) {
@@ -63,7 +63,7 @@ const mutations = {
     state.idEditProduct = idProduct;
   },
   setEditProduct: (state) => {
-    state.products.forEach((product, index, arrayProducts) => {
+    state.products.forEach((product) => {
       // eslint-disable-next-line no-underscore-dangle
       if (product._id === state.idEditProduct) {
         state.currentEditProduct = product;
@@ -71,12 +71,12 @@ const mutations = {
     });
   },
   addProduct: (state, product) => {
-    product.images.forEach((image, index, arr) => {
+    /* product.images.forEach((image, index, arr) => {
       arr[index] = `${config.image}/${image}`;
-    })
+    }); */
     state.products.push(product);
   },
-  updateProduct: (state, product, id) => {
+  updateProduct: (state, { product, id }) => {
     state.products = [
       ...state.products.filter(element => element.id !== id),
       product,

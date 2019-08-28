@@ -7,13 +7,21 @@
     >
       <b-card-body>
         <b-row>
-
-          <img
-            :src="mainImage"
-            style="max-height: 7rem;"
-            alt=""
-            class="m-2"
+          <b-carousel
+                  v-if="images.length !== 0"
+                  id="carousel-fade"
+                  controls
+                  fade
+                  indicators
+                  img-width="250"
+                  img-height="150"
           >
+            <b-carousel-slide
+                    v-for="(image, index) of images"
+                    :key="index"
+                    :img-src="image"
+            />
+          </b-carousel>
         </b-row>
         <b-row>
           <star-rating
@@ -52,7 +60,7 @@ export default {
     id: String,
     titleProduct: String,
     avlCount: Number,
-    mainImage: String,
+    images: Array,
     ratingProduct: Number,
   },
   data() {

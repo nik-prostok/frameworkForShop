@@ -7,43 +7,56 @@
     >
       <b-card-body>
         <b-row>
-          <lingallery
+          <b-carousel
             v-if="images.length !== 0"
-            :width="250"
-            :height="150"
-            :items="imagesForProduct"
-          />
+            id="carousel-fade"
+            controls
+            fade
+            indicators
+            img-width="250"
+            img-height="150"
+          >
+            <b-carousel-slide
+              v-for="(image, index) of images"
+              :key="index"
+              :img-src="image"
+            />
+          </b-carousel>
+          <!--<lingallery
+                      v-if="images.length !== 0"
+                      :width="250"
+                      :height="150"
+                      :items="imagesForProduct"
+                    />-->
           <div v-else>
             <p>Нет фото</p>
           </div>
         </b-row>
-        <b-row>
-          <b-col class="m-1">
-            <b-button
-              variant="primary"
-              @click="editProduct"
-            >
-              Ред.
-            </b-button>
-          </b-col>
-          <b-col class="m-1">
-            <b-button
-              variant="danger"
-              @click="deleteProduct"
-            >
-              Удалить
-            </b-button>
-          </b-col>
+        <b-row class="d-flex flex-row">
+          <b-button
+            class="m-1"
+            variant="primary"
+            @click="editProduct"
+          >
+            Ред.
+          </b-button>
+          <b-button
+            class="m-1"
+            variant="danger"
+            @click="deleteProduct"
+          >
+            Удалить
+          </b-button>
         </b-row>
-        <b-row>
-          <star-rating
-            :star-size="20"
-            :read-only="true"
-            :rating="ratingProduct"
-          />
-        </b-row>
+        <!--<b-row>
+                  <star-rating
+                    :star-size="20"
+                    :read-only="true"
+                    :rating="ratingProduct"
+                  />
+                </b-row>-->
         <b-row class="mt-3">
-          <b-col v-if="avlCount">
+          <b-col v-if="avlCount !== undefined">
             <p>Осталось: {{ avlCount }} шт</p>
           </b-col>
         </b-row>
@@ -56,15 +69,13 @@
 </template>
 
 <script>
-import Lingallery from 'lingallery';
-import StarRating from '../Rating/star-rating.vue';
+/* import StarRating from '../Rating/star-rating.vue'; */
 
 export default {
   name: 'ProductAdmin',
-  components: {
+  /*  components: {
     StarRating,
-    Lingallery,
-  },
+  }, */
   props: {
     id: String,
     titleProduct: String,
@@ -75,15 +86,9 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    imagesForProduct() {
-      return this.images.map(image => ({
-        src: image,
-        thumbnail: image,
-      }));
-    },
+  computed: {},
+  mounted() {
   },
-  mounted() {},
   methods: {
     deleteProduct() {
       this.$store.dispatch('products/deleteProduct', this.id)
@@ -111,8 +116,8 @@ export default {
 </script>
 
 <style scoped>
-  .image-product {
-    width: 20%;
-    height: auto;
-  }
+    .image-product {
+        width: 20%;
+        height: auto;
+    }
 </style>
