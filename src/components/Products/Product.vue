@@ -8,18 +8,18 @@
       <b-card-body>
         <b-row>
           <b-carousel
-                  v-if="images.length !== 0"
-                  id="carousel-fade"
-                  controls
-                  fade
-                  indicators
-                  img-width="250"
-                  img-height="150"
+            v-if="images.length !== 0"
+            id="carousel-fade"
+            controls
+            fade
+            indicators
+            img-width="250"
+            img-height="150"
           >
             <b-carousel-slide
-                    v-for="(image, index) of images"
-                    :key="index"
-                    :img-src="image"
+              v-for="(image, index) of images"
+              :key="index"
+              :img-src="image"
             />
           </b-carousel>
         </b-row>
@@ -50,6 +50,7 @@
 
 <script>
 import StarRating from '../Rating/star-rating.vue';
+import { purshares } from '../../api/api';
 
 export default {
   name: 'Product',
@@ -69,13 +70,16 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    addToOrder(idProduct) {
-      const payload = {
-        idProduct,
-        idCustomer: '5cdc9f41a2767427d8fbfb7c',
+    async addToOrder(idProduct) {
+      const purshare = {
+        products: [idProduct],
+        customer: '5ce08aed5e1d84270cef4e04',
         countProduct: 2,
       };
-      this.$store.dispatch('saveProductToOrder', payload);
+      await purshares.createPurshare(purshare)
+        .then((res) => {
+          console.log(res);
+        });
     },
   },
 };

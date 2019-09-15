@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign,no-shadow */
-import products from '../../api/products.api';
+import { products } from '../../api/api';
 
 // initial state
 const state = {
@@ -9,11 +9,7 @@ const state = {
 };
 
 // getters
-const getters = {
-  /* products: state => state.products,
-  currentEditProduct: state => state.currentEditProduct,
-  idEditProduct: state => state.idEditProduct, */
-};
+const getters = {};
 
 // actions
 const actions = {
@@ -38,9 +34,6 @@ const actions = {
       });
   },
   async saveEditProduct({ commit }, { editProduct, idProduct }) {
-    // eslint-disable-next-line no-underscore-dangle
-    // delete payload.product._id;
-    console.log(idProduct);
     await products.saveEditProduct(editProduct, idProduct)
       .then((res) => {
         commit('updateProduct', { product: res.data, id: idProduct });
@@ -71,9 +64,6 @@ const mutations = {
     });
   },
   addProduct: (state, product) => {
-    /* product.images.forEach((image, index, arr) => {
-      arr[index] = `${config.image}/${image}`;
-    }); */
     state.products.push(product);
   },
   updateProduct: (state, { product, id }) => {

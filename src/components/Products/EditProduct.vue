@@ -310,11 +310,6 @@ export default {
       uploadedFile: [],
     };
   },
-  mounted() {
-    this.$store.dispatch('categories/getAllCategories');
-    this.$store.commit('products/setEditProduct');
-    this.editProduct = deepCopy(this.editProductCurrent);
-  },
   watch: {
     editProductCurrent(newValue, oldValue) {
       console.log(`Updating from ${oldValue} to ${newValue}`);
@@ -322,6 +317,11 @@ export default {
       // Do whatever makes sense now
       this.editProduct = deepCopy(this.editProductCurrent);
     },
+  },
+  mounted() {
+    this.$store.dispatch('categories/getAllCategories');
+    this.$store.commit('products/setEditProduct');
+    this.editProduct = deepCopy(this.editProductCurrent);
   },
   computed: {
     ...mapState({
