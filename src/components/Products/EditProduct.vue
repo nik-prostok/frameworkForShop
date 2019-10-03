@@ -282,6 +282,7 @@ import { mapState } from 'vuex';
 import UploadFile from '../UploadFile.vue';
 import StarRating from '../Rating/star-rating.vue';
 import AddCategory from '../Categories/AddCategory.vue';
+import { deepCopy } from '../../util';
 
 export default {
   name: 'EditProduct',
@@ -295,22 +296,48 @@ export default {
   },
   data() {
     return {
+      editProduct: {
+        title: '',
+        description: '',
+        price: 0,
+        rating: 0,
+        category: '',
+        availableQuantity: 0,
+        keywords: [''],
+        images: [],
+        color: '',
+      },
       uploadedFile: [],
     };
+  },
+  watch: {
+    editProductCurrent(newValue, oldValue) {
+      console.log(`Updating from ${oldValue} to ${newValue}`);
+
+      // Do whatever makes sense now
+      this.editProduct = deepCopy(this.editProductCurrent);
+    },
   },
   mounted() {
     this.$store.dispatch('categories/getAllCategories');
     this.$store.commit('products/setEditProduct');
-    // this.editProduct = deepCopy(this.currentEditProduct);
+    this.editProduct = deepCopy(this.editProductCurrent);
   },
   computed: {
     ...mapState({
-      editProduct: state => state.products.currentEditProduct,
+      editProductCurrent: state => state.products.currentEditProduct,
       idEditProduct: state => state.products.idEditProduct,
       categories: state => state.categories.categories,
     }),
   },
   methods: {
+    deleteFile(index) {
+      this.editProduct.images.forEach((imageURL, indexInArr, arrayImage) => {
+        if (indexInArr === index) {
+          arrayImage.splice(indexInArr, 1);
+        }
+      });
+    },
     addCategory(idCategory) {
       this.$store.dispatch('categories/getAllCategories')
         .then(() => {
@@ -327,13 +354,14 @@ export default {
       });
       this.uploadedFile = [];
       // eslint-disable-next-line no-underscore-dangle
-      console.log(this.idEditProduct);
-      this.$store.dispatch('products/saveEditProduct', this.editProduct, this.idEditProduct)
+      // console.log(this.idEditProduct);
+      this.$store.dispatch('products/saveEditProduct', { editProduct: this.editProduct, idProduct: this.idEditProduct })
         .then(() => {
           this.$store.dispatch('products/getAllProducts');
           this.makeToast('Продукт был успешно обновлен', 'Успешно', 'success');
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error(error);
           this.makeToast('Произошла ошибка во время выполнения операции', 'Ошибка', 'danger');
         });
     },

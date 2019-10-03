@@ -1,20 +1,19 @@
-import api from './api';
-import config from '../../config';
+import api from './axios.settings';
 
 export default {
   getProducts() {
-    return api().get(`${config.api}/products`);
+    return api().get('/products');
   },
   getProduct(idProduct) {
-    return api().get(`${config.api}/products/${idProduct}`);
+    return api().get(`/products/${idProduct}`);
   },
   saveProduct(product) {
-    return api().post(`${config.api}/products`, product);
+    return api().post('/products', product);
   },
   saveEditProduct(product, idProduct) {
-    return api().put(`${config.api}/products/${idProduct}`, product);
+    return api().put(`/products/${idProduct}`, product);
   },
   deleteProduct(idProduct) {
-    return api().delete(`${config.api}/products/${idProduct}`);
+    return api().delete(`/products/${idProduct}`);
   },
 };

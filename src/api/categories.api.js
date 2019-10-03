@@ -1,11 +1,10 @@
-import api from './api';
-import config from '../../config';
+import api from './axios.settings';
 
 export default {
   getCategories() {
-    return api().get(`${config.api}/categories`);
+    return api().get('/categories');
   },
   saveCategory(category) {
-    return api().post(`${config.api}/categories`, category);
+    return api().post('/categories', category);
   },
 };

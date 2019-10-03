@@ -11,7 +11,7 @@
           class="m-3"
           :title-product="product.title"
           :avl-count="product.availableQuantity"
-          :main-image="product.images[0]"
+          :images="imagesURL(product.images)"
           :rating-product="product.rating"
         />
       </b-col>
@@ -29,6 +29,7 @@
 <script>
 import { mapState } from 'vuex';
 import Product from './Product.vue';
+import config from '../../../config';
 
 export default {
   name: 'ListProducts',
@@ -54,6 +55,10 @@ export default {
   methods: {
     update() {
       this.$store.dispatch('products/getAllProducts');
+    },
+    imagesURL(images) {
+      console.log(images);
+      return images.map(image => `${config.image}/${image}`);
     },
   },
 };

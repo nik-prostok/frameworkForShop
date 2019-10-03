@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign,no-shadow */
-import products from '../../api/products.api';
-import config from '../../../config.json';
+import { products } from '../../api/api';
 
 // initial state
 const state = {
@@ -10,11 +9,7 @@ const state = {
 };
 
 // getters
-const getters = {
-  /* products: state => state.products,
-  currentEditProduct: state => state.currentEditProduct,
-  idEditProduct: state => state.idEditProduct, */
-};
+const getters = {};
 
 // actions
 const actions = {
@@ -38,12 +33,10 @@ const actions = {
         commit('addProduct', res.data);
       });
   },
-  async saveEditProduct({ commit }, product, idProduct) {
-    // eslint-disable-next-line no-underscore-dangle
-    delete product._id;
-    await products.saveEditProduct(product, idProduct)
+  async saveEditProduct({ commit }, { editProduct, idProduct }) {
+    await products.saveEditProduct(editProduct, idProduct)
       .then((res) => {
-        commit('updateProduct', res.data, idProduct);
+        commit('updateProduct', { product: res.data, id: idProduct });
       });
   },
   async deleteProduct({ commit }, idProduct) {
@@ -63,7 +56,7 @@ const mutations = {
     state.idEditProduct = idProduct;
   },
   setEditProduct: (state) => {
-    state.products.forEach((product, index, arrayProducts) => {
+    state.products.forEach((product) => {
       // eslint-disable-next-line no-underscore-dangle
       if (product._id === state.idEditProduct) {
         state.currentEditProduct = product;
@@ -71,12 +64,9 @@ const mutations = {
     });
   },
   addProduct: (state, product) => {
-    product.images.forEach((image, index, arr) => {
-      arr[index] = `${config.image}/${image}`;
-    })
     state.products.push(product);
   },
-  updateProduct: (state, product, id) => {
+  updateProduct: (state, { product, id }) => {
     state.products = [
       ...state.products.filter(element => element.id !== id),
       product,
