@@ -5,6 +5,7 @@ import Store from './views/Shop.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
 import DashboardProductsView from './views/Dashboard.products.view.vue';
 import DashboardCategoriesView from './views/Dashboard.categories.view.vue';
+import Auth from './views/Auth.vue';
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/dashboard/categories',
       name: 'dashboardCategories',
       component: DashboardCategoriesView,
+    },
+    {
+      path: '/Auth',
+      name: 'Auth',
+      component: Auth,
     },
   ],
 });
