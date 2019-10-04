@@ -7,12 +7,14 @@ import store from './store/index';
 import './registerServiceWorker';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import './fonts/fonts.css';
 
-library.add(faArrowLeft);
+library.add(faArrowLeft, faTrash);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;

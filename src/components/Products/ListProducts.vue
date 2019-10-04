@@ -6,13 +6,11 @@
         :key="product._id"
       >
         <product
-          :id="product._id"
           style="max-width: 15rem;"
           class="m-3"
-          :title-product="product.title"
-          :avl-count="product.availableQuantity"
+          :product="product"
           :images="imagesURL(product.images)"
-          :rating-product="product.rating"
+          :onBuy="addToCart"
         />
       </b-col>
     </b-row>
@@ -27,7 +25,7 @@
 
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Product from './Product.vue';
 import config from '../../../config';
 
@@ -41,7 +39,7 @@ export default {
   },
   data() {
     return {
-
+      customer: '5ce08aed5e1d84270cef4e04',
     };
   },
   computed: {
@@ -53,9 +51,9 @@ export default {
     this.$store.dispatch('products/getAllProducts');
   },
   methods: {
-    update() {
-      this.$store.dispatch('products/getAllProducts');
-    },
+    ...mapActions('cart', [
+            'addToCart', //this.addToCart()
+    ]),
     imagesURL(images) {
       console.log(images);
       return images.map(image => `${config.image}/${image}`);

@@ -2,17 +2,19 @@ import api from './axios.settings';
 
 export default {
   getCart(customer) {
-    console.log(customer)
-    return api().get(`/cart/${customer}`);
+    console.log(customer);
+    return api.get(`/cart/${customer}`);
   },
-  addToCart(customer, product, count) {
-    return api().post('/cart', {
+  addToCart(customer, payload) {
+    return api.post('/cart', {
       customer,
-      product,
-      count,
+      product: {
+        product: payload.product,
+        count: payload.count,
+      },
     });
   },
   clearCart(customer) {
-    return api().delete('/cart', customer);
+    return api.delete('/cart', customer);
   },
 };

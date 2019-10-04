@@ -1,9 +1,9 @@
 <template>
   <div class="product">
     <b-card
-      v-if="titleProduct && id"
+      v-if="product.title && product._id"
       class="shadow"
-      :title="titleProduct"
+      :title="product.title"
     >
       <b-card-body>
         <b-row>
@@ -27,15 +27,15 @@
           <star-rating
             :star-size="20"
             :read-only="true"
-            :rating="ratingProduct"
+            :rating="product.rating"
           />
         </b-row>
         <b-row class="mt-3">
-          <b-col v-if="avlCount">
-            <p>Осталось: {{ avlCount }} шт</p>
+          <b-col v-if="product.availableQuantity">
+            <p>Осталось: {{ product.availableQuantity }} шт</p>
           </b-col>
           <b-col>
-            <b-button @click="addToOrder(id)">
+            <b-button @click="onClickBuy">
               Buy
             </b-button>
           </b-col>
@@ -50,7 +50,6 @@
 
 <script>
 import StarRating from '../Rating/star-rating.vue';
-import { purshares } from '../../api/api';
 
 export default {
   name: 'Product',
@@ -58,11 +57,9 @@ export default {
     StarRating,
   },
   props: {
-    id: String,
-    titleProduct: String,
-    avlCount: Number,
+    product: Object,
     images: Array,
-    ratingProduct: Number,
+    onBuy: Function,
   },
   data() {
     return {};
@@ -70,17 +67,13 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    async addToOrder(idProduct) {
-      const purshare = {
-        products: [idProduct],
-        customer: '5ce08aed5e1d84270cef4e04',
-        countProduct: 2,
-      };
-      await purshares.createPurshare(purshare)
-        .then((res) => {
-          console.log(res);
-        });
-    },
+    onClickBuy(){
+      let id = this.product._id;
+      this.onBuy({
+        product: id,
+        count: 1
+      });
+    }
   },
 };
 </script>
