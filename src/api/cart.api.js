@@ -5,13 +5,11 @@ export default {
     console.log(customer);
     return api.get(`/cart/${customer}`);
   },
-  addToCart(customer, payload) {
+  addToCart(customer, products) {
+    console.log(products)
     return api.post('/cart', {
       customer,
-      product: {
-        product: payload.product,
-        count: payload.count,
-      },
+      products,
     });
   },
   clearCart(customer) {

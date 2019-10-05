@@ -49,7 +49,7 @@
             class="mr-1"
             lg="1"
             xl="2"
-            offset-lg="6"
+            offset-lg="5"
             offset-xl="5"
           >
             <p style="text-align: center; font-family: Roboto;">
@@ -59,9 +59,13 @@
           <b-col
             cols="2"
             sm="2"
-            lg="2"
-            xl="2"
-            class="ml-4"
+            lg="1"
+            md="1"
+            xl="1"
+            offset-sm="1"
+            offset-xl="1"
+            offset-lg="2"
+            offset-md="2"
           >
             <p style="text-align: end; font-family: Roboto;">
               {{ price * count }} {{ currency }}

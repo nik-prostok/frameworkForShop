@@ -18,9 +18,10 @@
       </b-col>
       <b-col
         class="d-none d-sm-block"
-        cols="2"
+        cols="1"
+        offset="1"
       >
-        <p style="font-family: Roboto; text-align: end; padding-right: 1em">
+        <p style="font-family: Roboto; padding-right: 1em">
           Цена
         </p>
       </b-col>
@@ -71,8 +72,6 @@ export default {
   },
   methods: {
     imagesURL(images) {
-      console.log(images);
-      console.log(this.cart)
       return images.map(image => `${config.image}/${image}`);
     },
   },

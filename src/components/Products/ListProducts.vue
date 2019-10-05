@@ -55,7 +55,6 @@ export default {
             'addToCart', //this.addToCart()
     ]),
     imagesURL(images) {
-      console.log(images);
       return images.map(image => `${config.image}/${image}`);
     },
   },
