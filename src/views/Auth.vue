@@ -1,5 +1,13 @@
 <template>
   <div class="Auth">
+    <label>Token</label><br>
+    <code>{{ $store.getters['auth/token'] }}</code><hr>
+    <label>User</label><br>
+    <code>
+    email {{ $store.getters['auth/user'].email }}<br>
+    role {{ $store.getters['auth/user'].role }}<br>
+    </code>
+    <router-link to="AccessOnlyAdmin">Admin Page</router-link>
     <label>Registration</label><br>
     <input
       v-model="email"
@@ -55,9 +63,6 @@
   </div>
 </template>
 <script>
-
-import { mapState } from 'vuex';
-
 export default {
   name: 'Auth',
   data() {
@@ -67,14 +72,6 @@ export default {
       role: 'user',
     };
   },
-  computed: {
-    ...mapState({
-      authenticate: state => state.auth.authenticate,
-      register: state => state.auth.register,
-      delete: state => state.auth.deleteUser,
-      updateUserRole: state => state.auth.updateUserRole,
-    }),
-  },
   methods: {
     registerUser() {
       this.$store.dispatch('auth/register', { email: this.email, password: this.password })
@@ -82,7 +79,11 @@ export default {
     },
     loginUser() {
       this.$store.dispatch('auth/authenticate', { email: this.email, password: this.password })
-        .then(() => {});
+      .then((data) => {
+        this.$cookie.set('jwt_token', data.token, 1);
+        this.$cookie.set('user_email', data.user.email, 1);
+        this.$cookie.set('user_role', data.user.role, 1);
+      });
     },
     logoutUser() {
       this.$store.commit('auth/logout');
@@ -96,5 +97,14 @@ export default {
         .then(() => {});
     },
   },
+  beforeRouteEnter(to, from, next) {
+    if (to.query.redirectFrom) {
+      next(vm => {
+        alert('Sorry, you dont have the right access to reach the route requested')
+      })
+    } else {
+      next()
+    }
+  }
 };
 </script>

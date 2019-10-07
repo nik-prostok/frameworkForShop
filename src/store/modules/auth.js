@@ -26,11 +26,19 @@ const actions = {
       .catch(err => console.log(err.response));
   },
   authenticate({ commit, state }, { email, password }) {
-    auth.authenticate({ email, password })
-      .then((res) => {
-        if (res.data.success) commit('authenticate', res.data);
-      })
-      .catch(err => console.log(err.response));
+    return new Promise ((resolve, reject) => {
+      auth.authenticate({ email, password })
+        .then((res) => {
+          if (res.data.success) {
+            commit('authenticate', res.data);
+            resolve(res.data)
+          }
+        })
+        .catch(err => {
+          console.log(err.response)
+          reject(err.response)
+        })
+    })
   },
   deleteUser({ commit, state }, { email }) {
     auth.deleteUser({ email })
@@ -45,6 +53,13 @@ const actions = {
         if (res.data.data.success) commit('updateUserRole', res.data);
       })
       .catch(err => console.log(err.response));
+  },
+  getDataFromCookie({ commit }, data) {
+    console.log(data)
+    commit('authenticate', data);
+  },
+  permission({ state }) {
+    return new Promise (resolve => resolve(state.user.role))
   },
 };
 

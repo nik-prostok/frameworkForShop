@@ -7,7 +7,28 @@ import DashboardProductsView from './views/Dashboard.products.view.vue';
 import DashboardCategoriesView from './views/Dashboard.categories.view.vue';
 import Auth from './views/Auth.vue';
 
+import store from './store/index'
+
 Vue.use(Router);
+
+const AccessRoute = (role, redirectTo) => {
+  return async (to, from, next) => {
+    try {
+      const userRole = await store.dispatch('auth/permission')
+      if (role.includes(userRole)) {
+        next()
+      } else throw new Error('permission')
+    } catch (e) {
+      next({
+        name: redirectTo,
+        query: { redirectFrom: to.fullPath }
+      })
+    }
+  }
+}
+
+const roleAdmin = AccessRoute(['admin'], 'Auth')
+const roleModerator = AccessRoute(['admin', 'moderator'], 'Auth')
 
 export default new Router({
   mode: 'history',
@@ -36,6 +57,12 @@ export default new Router({
       path: '/Auth',
       name: 'Auth',
       component: Auth,
+    },
+    {
+      path: '/AccessOnlyAdmin',
+      name: 'AccessOnlyAdmin',
+      component: Auth,
+      beforeEnter: roleAdmin
     },
   ],
 });

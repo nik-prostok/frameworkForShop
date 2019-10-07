@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
-
+import VueCookie from  'vue-cookie';
+// Tell Vue to use the plugin
 import App from './App.vue';
 import router from './router';
 import store from './store/index';
@@ -20,6 +21,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
+Vue.use(VueCookie);
 
 new Vue({
   router,
