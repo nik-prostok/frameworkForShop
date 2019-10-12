@@ -5,6 +5,7 @@ import {deepCopy} from '../../util';
 
 // initial state
 const state = {
+    customer: '5ce08aed5e1d84270cef4e04',
     cart: {
         customer: '',
         products: []
@@ -20,8 +21,8 @@ const getters = {
 
 // actions
 const actions = {
-    async getCart({commit}, customer) {
-        await cart.getCart(customer)
+    async getCart({commit, state}) {
+        await cart.getCart(state.customer)
             .then((res) => {
                 if (res.data !== '') {
                     commit('setCart', res.data);
@@ -33,23 +34,80 @@ const actions = {
             });
     },
     async addToCart({commit, state}, payload) {
-        let customer = '5ce08aed5e1d84270cef4e04'
+        return new Promise(async (resolve, reject) => {
+            let products = deepCopy(state.cart.products);
+
+            let index = state.cart.products.findIndex(product => product.product._id === payload.product)
 
 
-        let products = deepCopy(state.cart.products);
+            if (index !== -1) {
+                if ((products[index].count + payload.count) <= products[index].product.availableQuantity) {
+                    products[index].count += payload.count;
+                } else {
+                    reject(`Сейчас доступно не более ${products[index].product.availableQuantity} шт.`)
+                }
+            } else {
+                products.push(payload)
+            }
 
-        let index = state.cart.products.findIndex(product => product.product._id === payload.product)
-        console.log(index);
-        if (index !== -1){
-            products[index].count += payload.count;
-        } else {
-            products.push(payload);
-        }
+            await cart.addToCart(state.customer, products)
+                .then((res) => {
+                    commit('setCart', res.data);
+                });
+        })
+    },
+    async setCountPoint({commit, state}, payload) {
+        return new Promise(async (resolve, reject) => {
+            await cart.setCountPoint(state.customer, payload.productId, payload.count)
+                .then((res) => {
+                    commit('setCart', res.data)
+                })
+        })
+    },
+    async increaseCountPoint({commit, state}, payload) {
+        return new Promise(async (resolve, reject) => {
 
-        await cart.addToCart(customer, products)
-            .then((res) => {
-                commit('setCart', res.data);
-            });
+            console.log(payload)
+            let products = deepCopy(state.cart.products);
+
+            let index = state.cart.products.findIndex(product => product.product._id === payload.idProduct)
+
+
+            if (index !== -1) {
+                if ((products[index].count + 1) <= products[index].product.availableQuantity) {
+                    products[index].count += 1;
+                    commit('setCountPoint', {index, count: products[index].count})
+                    await cart.setCountPoint(state.customer, payload.idProduct, products[index].count)
+                        .then((res) => {
+                            commit('setCart', res.data);
+                        })
+                } else {
+                    reject(`Сейчас доступно не более ${products[index].product.availableQuantity} шт.`)
+                }
+            }
+
+        })
+    },
+    async reduceCountPoint({commit, state}, payload) {
+        return new Promise(async (resolve, reject) => {
+            let products = deepCopy(state.cart.products);
+
+            let index = state.cart.products.findIndex(product => product.product._id === payload.idProduct)
+
+
+            if (index !== -1) {
+                if ((products[index].count - 1) <= products[index].product.availableQuantity) {
+                    products[index].count -= 1;
+                    commit('setCountPoint', {index, count: products[index].count})
+                    await cart.setCountPoint(state.customer, payload.idProduct, products[index].count)
+                        .then((res) => {
+                            commit('setCart', res.data);
+                        })
+                } else {
+                    reject(`Сейчас доступно не более ${products[index].product.availableQuantity} шт.`)
+                }
+            }
+        })
     },
 };
 
@@ -57,6 +115,11 @@ const actions = {
 const mutations = {
     setCart(state, payload) {
         state.cart = payload;
+    },
+    setCountPoint(state, payload) {
+        if (payload.count > 0) {
+            state.cart.products[payload.index].count = payload.count;
+        }
     }
 };
 

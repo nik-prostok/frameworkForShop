@@ -1,88 +1,106 @@
 <template>
-  <div
-    id="cart"
-    class="ml-2 mr-2"
-  >
-    <b-row class="mr-1">
-      <b-col cols="7">
-        <h3 style="font-family: Roboto;">
-          Моя корзина
-        </h3>
-      </b-col>
-      <b-col
-        class="d-none d-sm-block"
-        cols="3"
-        style="font-family: Roboto; text-align: center"
-      >
-        Количество
-      </b-col>
-      <b-col
-        class="d-none d-sm-block"
-        cols="1"
-        offset="1"
-      >
-        <p style="font-family: Roboto; padding-right: 1em">
-          Цена
-        </p>
-      </b-col>
-    </b-row>
-    <hr>
-    <b-row
-      v-for="item in cart"
-      :key="item._id"
-      no-gutters
+    <div
+            id="cart"
+            class="ml-2 mr-2 cart"
     >
-      <b-col>
-        <b-card class="cart-box mb-3">
-          <CartPoint
-            :item-title="item.product.title"
-            :images="imagesURL(item.product.images)"
-            :count="item.count"
-            :currency="item.product.currency"
-            :price="item.product.price"
-            :available="item.product.availableQuantity"
-          />
-        </b-card>
-      </b-col>
-    </b-row>
-  </div>
+        <b-row>
+            <b-col cols="3">
+                <h3 style="font-family: Roboto;">
+                    Моя корзина
+                </h3>
+            </b-col>
+            <b-col
+                    class="d-none d-sm-block"
+                    cols="2"
+                    offset="4"
+                    style="font-family: Roboto; text-align: center"
+            >
+                Количество
+            </b-col>
+            <b-col
+                    style="font-family: Roboto; text-align: center"
+                    cols="1"
+                    offset="2"
+            >
+                <p style="font-family: Roboto;">
+                    Цена
+                </p>
+            </b-col>
+        </b-row>
+        <hr>
+        <b-row
+                v-for="item in cart"
+                :key="item.product._id"
+                no-gutters
+        >
+            <b-col>
+                <b-card class="cart-box mb-3">
+                    <CartPoint
+                            :id="item.product._id"
+                            :item-title="item.product.title"
+                            :images="imagesURL(item.product.images)"
+                            :count="item.count"
+                            :currency="item.product.currency"
+                            :price="item.product.price"
+                            :available="item.product.availableQuantity"
+                            :increase-count="onIncreaseCount"
+                            :reduce-count="onReduceCount"
+                    />
+                </b-card>
+            </b-col>
+        </b-row>
+    </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+    import {mapGetters} from 'vuex';
 
-import CartPoint from './CartPoint.vue';
-import config from '../../../config';
+    import toast from '../../plugins/toast';
 
-export default {
-  name: 'Cart',
-  components: {
-    CartPoint,
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters('cart', {
-      cart: 'cartProducts',
-    }),
-  },
-  mounted() {
-    this.$store.dispatch('cart/getCart', '5ce08aed5e1d84270cef4e04');
-  },
-  methods: {
-    imagesURL(images) {
-      return images.map(image => `${config.image}/${image}`);
-    },
-  },
-};
+    import CartPoint from './CartPoint.vue';
+    import config from '../../../config';
+
+    export default {
+        name: 'Cart',
+        components: {
+            CartPoint,
+        },
+        data() {
+            return {};
+        },
+        computed: {
+            ...mapGetters('cart', {
+                cart: 'cartProducts',
+            }),
+        },
+        mounted() {
+            this.$store.dispatch('cart/getCart', '5ce08aed5e1d84270cef4e04');
+        },
+        methods: {
+            imagesURL(images) {
+                return images.map(image => `${config.image}/${image}`);
+            },
+            onIncreaseCount(idProduct) {
+                this.$store.dispatch('cart/increaseCountPoint', {idProduct})
+                    .catch(err => toast.error(err))
+            },
+            onReduceCount(idProduct) {
+                this.$store.dispatch('cart/reduceCountPoint', {idProduct})
+                    .catch(err => toast.error(err))
+            }
+        },
+    };
 </script>
 
 <style scoped>
+    .cart {
+        min-width: 768px;
+    }
     div.card-body {
         margin: 0px;
         padding: 0px;
     }
+
     .cart-box {
         padding: 0px;
         transition: box-shadow .3s;

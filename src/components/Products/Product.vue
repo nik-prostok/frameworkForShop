@@ -35,8 +35,11 @@
             <p>Осталось: {{ product.availableQuantity }} шт</p>
           </b-col>
           <b-col>
-            <b-button @click="onClickBuy">
-              Buy
+            <b-button variant="success" v-if="alreadyInCart" @click="onClickBuy">
+              Купить
+            </b-button>
+            <b-button variant="outline-success" v-else>
+              Уже в корзине
             </b-button>
           </b-col>
         </b-row>
@@ -60,6 +63,9 @@ export default {
     product: Object,
     images: Array,
     onBuy: Function,
+    alreadyInCart: {
+      type: Boolean,
+    }
   },
   data() {
     return {};

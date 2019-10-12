@@ -10,6 +10,7 @@
           class="m-3"
           :product="product"
           :images="imagesURL(product.images)"
+          :already-in-cart="alreadyInCart(product._id)"
           :onBuy="addToCart"
         />
       </b-col>
@@ -25,7 +26,7 @@
 
 
 <script>
-import { mapState, mapActions } from 'vuex';
+  import {mapState, mapActions, mapGetters} from 'vuex';
 import Product from './Product.vue';
 import config from '../../../config';
 
@@ -39,12 +40,15 @@ export default {
   },
   data() {
     return {
-      customer: '5ce08aed5e1d84270cef4e04',
+
     };
   },
   computed: {
     ...mapState({
       products: state => state.products.products,
+    }),
+    ...mapGetters('cart', {
+      cart: 'cartProducts'
     }),
   },
   mounted() {
@@ -52,11 +56,28 @@ export default {
   },
   methods: {
     ...mapActions('cart', [
-            'addToCart', //this.addToCart()
+            'addToCart',
     ]),
     imagesURL(images) {
       return images.map(image => `${config.image}/${image}`);
     },
+    alreadyInCart(productId) {
+      if (this.cart.find(cartItem => {
+        if (cartItem.product._id === productId){
+          return true;
+        }
+      })) {
+        return false;
+      }  else {
+        return true;
+      }
+
+      /*return this.cart.findIndex(cartItem => {
+        if (cartItem.product._id === productId){
+          return true;
+        }
+      })*/
+    }
   },
 };
 </script>
