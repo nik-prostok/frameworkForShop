@@ -1,5 +1,6 @@
 {
     "api": "http://localhost:8080/api",
     "image": "http://localhost:8080/static/image",
-    "auth": "http://localhost:8080/auth"
+    "auth": "http://localhost:8080/auth",
+    "payment": "http://localhost:8080/api/payment"
 }

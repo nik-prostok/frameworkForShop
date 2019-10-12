@@ -4,6 +4,7 @@ import products from './modules/products';
 import categories from './modules/categories';
 import auth from './modules/auth';
 import cart from './modules/cart';
+import payment from './modules/payment';
 
 import createLogger from '../plugins/logger';
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     categories,
     auth,
     cart,
+    payment
   },
   strict: debug,
   plugins: debug ? [createLogger()] : [],

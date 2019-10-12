@@ -6,6 +6,7 @@ import NotFoundPage from './components/NotFoundPage.vue';
 import DashboardProductsView from './views/Dashboard.products.view.vue';
 import DashboardCategoriesView from './views/Dashboard.categories.view.vue';
 import Auth from './views/Auth.vue';
+import Payment from './views/TestPaymentConfirmation';
 
 import store from './store/index'
 
@@ -63,6 +64,11 @@ export default new Router({
       name: 'AccessOnlyAdmin',
       component: Auth,
       beforeEnter: roleAdmin
+    },
+    {
+      path: '/TestPaymentConfirmation',
+      name: 'TestPaymentConfirmation',
+      component: Payment
     },
   ],
 });
