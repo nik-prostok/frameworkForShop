@@ -17,7 +17,7 @@
             >
                 <img
                         style="width: 150px; height: auto"
-                        :src="images[0]"
+                        :src="imagesURL[0]"
                         alt=""
                 >
             </b-col>
@@ -142,6 +142,10 @@
                 type: Number,
                 required: true,
             },
+            imageUrlConfig: {
+                type: String,
+                required: true,
+            },
             images: {
                 type: Array,
                 required: true,
@@ -186,9 +190,14 @@
                 this.showIcon = false;
             },
             deletePoint() {
-                this.onDeletePoint();
+                this.onDeletePoint(this.id);
             }
         },
+        computed: {
+            imagesURL() {
+                return this.images.map(image => `${this.imageUrlConfig}/${image}`);
+            },
+        }
     };
 </script>
 

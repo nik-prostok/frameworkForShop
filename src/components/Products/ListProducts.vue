@@ -9,8 +9,7 @@
           style="max-width: 15rem;"
           class="m-3"
           :product="product"
-          :images="imagesURL(product.images)"
-          :already-in-cart="alreadyInCart(product._id)"
+          :image-url-config="imageUrlConfig"
           :onBuy="addToCart"
         />
       </b-col>
@@ -47,9 +46,9 @@ export default {
     ...mapState({
       products: state => state.products.products,
     }),
-    ...mapGetters('cart', {
-      cart: 'cartProducts'
-    }),
+    imageUrlConfig(){
+      return config.image;
+    }
   },
   mounted() {
     this.$store.dispatch('products/getAllProducts');
@@ -58,26 +57,6 @@ export default {
     ...mapActions('cart', [
             'addToCart',
     ]),
-    imagesURL(images) {
-      return images.map(image => `${config.image}/${image}`);
-    },
-    alreadyInCart(productId) {
-      if (this.cart.find(cartItem => {
-        if (cartItem.product._id === productId){
-          return true;
-        }
-      })) {
-        return false;
-      }  else {
-        return true;
-      }
-
-      /*return this.cart.findIndex(cartItem => {
-        if (cartItem.product._id === productId){
-          return true;
-        }
-      })*/
-    }
   },
 };
 </script>

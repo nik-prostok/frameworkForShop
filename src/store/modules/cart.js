@@ -16,6 +16,7 @@ const state = {
 // getters
 const getters = {
     cartProducts: () => state.cart.products,
+    indexProduct: (idProduct) => state.cart.products.findIndex(product => product.product._id === idProduct)
     // eslint-disable-next-line max-len
 };
 
@@ -33,7 +34,7 @@ const actions = {
                 toast.error(err);
             });
     },
-    async addToCart({commit, state}, payload) {
+    async addToCart({commit, state, getters}, payload) {
         return new Promise(async (resolve, reject) => {
             let products = deepCopy(state.cart.products);
 
@@ -94,7 +95,6 @@ const actions = {
 
             let index = state.cart.products.findIndex(product => product.product._id === payload.idProduct)
 
-
             if (index !== -1) {
                 if ((products[index].count - 1) <= products[index].product.availableQuantity) {
                     products[index].count -= 1;
@@ -109,6 +109,18 @@ const actions = {
             }
         })
     },
+    async deletePoint({ commit, state }, payload) {
+        return new Promise(async (resolve, reject) => {
+            // commit('deletePoint', {idProduct: payload.idProduct})
+            await cart.deletePoint(state.customer, payload.idProduct)
+                .then(res => {
+                    commit('setCart', res.data);
+                })
+                .catch(err => {
+                    reject(err);
+                })
+        })
+    }
 };
 
 // mutations
@@ -120,6 +132,11 @@ const mutations = {
         if (payload.count > 0) {
             state.cart.products[payload.index].count = payload.count;
         }
+    },
+    deletePoint(state, payload) {
+        //let index = state.cart.products.findIndex(product => product.product._id === payload.idProduct)
+        let index = getters.indexProduct(payload.idProduct)
+        state.cart.products.splice(index, 1)
     }
 };
 

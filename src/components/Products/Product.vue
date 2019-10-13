@@ -8,7 +8,7 @@
       <b-card-body>
         <b-row>
           <b-carousel
-            v-if="images.length !== 0"
+            v-if="imagesURL.length !== 0"
             id="carousel-fade"
             controls
             fade
@@ -17,7 +17,7 @@
             img-height="150"
           >
             <b-carousel-slide
-              v-for="(image, index) of images"
+              v-for="(image, index) of imagesURL"
               :key="index"
               :img-src="image"
             />
@@ -53,6 +53,7 @@
 
 <script>
 import StarRating from '../Rating/star-rating.vue';
+import {mapGetters} from "vuex";
 
 export default {
   name: 'Product',
@@ -61,16 +62,31 @@ export default {
   },
   props: {
     product: Object,
-    images: Array,
     onBuy: Function,
-    alreadyInCart: {
-      type: Boolean,
-    }
+    imageUrlConfig: String,
   },
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    ...mapGetters('cart', {
+      cart: 'cartProducts'
+    }),
+    alreadyInCart(){
+      if (this.cart.find(cartItem => {
+        if (cartItem.product._id === this.product._id){
+          return true;
+        }
+      })) {
+        return false;
+      }  else {
+        return true;
+      }
+    },
+    imagesURL() {
+      return this.product.images.map(image => `${this.imageUrlConfig}/${image}`);
+    },
+  },
   mounted() {},
   methods: {
     onClickBuy(){

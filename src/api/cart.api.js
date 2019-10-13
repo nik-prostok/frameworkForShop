@@ -13,6 +13,9 @@ export default {
   setCountPoint(customer, productID, count) {
     return api.post(`/cart/${customer}/${productID}/${count}`);
   },
+  deletePoint(customer, productID){
+    return api.delete(`/cart/${customer}/${productID}`);
+  },
   clearCart(customer) {
     return api.delete('/cart', customer);
   },

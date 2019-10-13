@@ -37,14 +37,16 @@
                 <b-card class="cart-box mb-3">
                     <CartPoint
                             :id="item.product._id"
+                            :images="item.product.images"
                             :item-title="item.product.title"
-                            :images="imagesURL(item.product.images)"
+                            :image-url-config="imageUrlConfig"
                             :count="item.count"
                             :currency="item.product.currency"
                             :price="item.product.price"
                             :available="item.product.availableQuantity"
                             :increase-count="onIncreaseCount"
                             :reduce-count="onReduceCount"
+                            :on-delete-point="onDeletePoint"
                     />
                 </b-card>
             </b-col>
@@ -72,20 +74,24 @@
             ...mapGetters('cart', {
                 cart: 'cartProducts',
             }),
+            imageUrlConfig(){
+                return config.image;
+            }
         },
         mounted() {
-            this.$store.dispatch('cart/getCart', '5ce08aed5e1d84270cef4e04');
+            this.$store.dispatch('cart/getCart');
         },
         methods: {
-            imagesURL(images) {
-                return images.map(image => `${config.image}/${image}`);
-            },
             onIncreaseCount(idProduct) {
                 this.$store.dispatch('cart/increaseCountPoint', {idProduct})
                     .catch(err => toast.error(err))
             },
             onReduceCount(idProduct) {
                 this.$store.dispatch('cart/reduceCountPoint', {idProduct})
+                    .catch(err => toast.error(err))
+            },
+            onDeletePoint(idProduct) {
+                this.$store.dispatch('cart/deletePoint', {idProduct})
                     .catch(err => toast.error(err))
             }
         },
@@ -96,6 +102,7 @@
     .cart {
         min-width: 768px;
     }
+
     div.card-body {
         margin: 0px;
         padding: 0px;
