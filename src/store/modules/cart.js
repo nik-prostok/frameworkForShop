@@ -77,10 +77,11 @@ const actions = {
             if (index !== -1) {
                 if ((products[index].count + 1) <= products[index].product.availableQuantity) {
                     products[index].count += 1;
-                    commit('setCountPoint', {index, count: products[index].count})
                     await cart.setCountPoint(state.customer, payload.idProduct, products[index].count)
                         .then((res) => {
-                            commit('setCart', res.data);
+                            if (res.status === 200){
+                                commit('setCountPoint', {index, count: products[index].count})
+                            }
                         })
                 } else {
                     reject(`Сейчас доступно не более ${products[index].product.availableQuantity} шт.`)
@@ -98,10 +99,11 @@ const actions = {
             if (index !== -1) {
                 if ((products[index].count - 1) <= products[index].product.availableQuantity) {
                     products[index].count -= 1;
-                    commit('setCountPoint', {index, count: products[index].count})
                     await cart.setCountPoint(state.customer, payload.idProduct, products[index].count)
                         .then((res) => {
-                            commit('setCart', res.data);
+                            if (res.status === 200){
+                                commit('setCountPoint', {index, count: products[index].count})
+                            }
                         })
                 } else {
                     reject(`Сейчас доступно не более ${products[index].product.availableQuantity} шт.`)
