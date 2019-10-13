@@ -4,10 +4,13 @@ export default {
   getCart(customer) {
     return api.get(`/cart/${customer}`);
   },
-  addToCart(customer, products) {
+  addToCart(customer, product, count) {
     return api.post('/cart', {
       customer,
-      products,
+      product: {
+        product,
+        count: 1
+      },
     });
   },
   setCountPoint(customer, productID, count) {

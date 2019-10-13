@@ -57,9 +57,7 @@
                             <div class="d-flex justify-content-center">
                                 <font-awesome-icon @click="onIncreaseCount" style="cursor: pointer;" class="m-2"
                                                    icon="plus"/>
-                                <p style="font-family: Roboto; margin: 3px;">
-                                    {{ count }}
-                                </p>
+                                <b-form-input v-model="setCountPoint"></b-form-input>
                                 <font-awesome-icon @click="onReduceCount" style="cursor: pointer;" class="m-2"
                                                    icon="minus"/>
                             </div>
@@ -124,6 +122,9 @@
 </template>
 
 <script>
+    import {mapGetters} from "vuex";
+    import toast from "../../plugins/toast";
+
     export default {
         props: {
             id: {
@@ -194,6 +195,22 @@
             }
         },
         computed: {
+            ...mapGetters('cart', {
+                getCountPointById: 'getCountPointById',
+                avlQntById: 'avlQntById'
+            }),
+            setCountPoint: {
+                get(){
+                  return this.getCountPointById(this.id)
+                },
+                set(count){
+                    console.log(count)
+                    this.$store.dispatch('cart/setCountPoint', { productId: this.id, count })
+                        .catch(err => {
+                            toast.error(`Сейчас доступно не более ${this.avlQntById(this.id)} шт.`)
+                        })
+                }
+            },
             imagesURL() {
                 return this.images.map(image => `${this.imageUrlConfig}/${image}`);
             },
