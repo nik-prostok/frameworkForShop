@@ -15,21 +15,19 @@ const actions = {
   async saveCategory({ commit }, category) {
     await categories.saveCategory(category)
       .then((res) => {
-        if (res.data.status === 200) {
-          commit('addNewCategory', res.data);
-        }
+          commit('addNewCategory', res.data.data);
       });
   },
   async getAllCategories({ commit }) {
     await categories.getCategories()
       .then((res) => {
-        commit('setCategories', res.data);
+        commit('setCategories', res.data.data);
       });
   },
   async getCategoriesWithoutNewCat({ commit }) {
     await categories.getCategories()
       .then((res) => {
-        commit('setCategoriesWithoutNewCat', res.data.filter((cat) => {
+        commit('setCategoriesWithoutNewCat', res.data.data.filter((cat) => {
           if (cat.title !== 'Новая категория') {
             return true;
           } return false;

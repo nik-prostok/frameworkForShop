@@ -10,7 +10,7 @@
           class="m-3"
           :product="product"
           :image-url-config="imageUrlConfig"
-          :onBuy="addToCart"
+          :on-buy="addToCart"
         />
       </b-col>
     </b-row>
@@ -25,7 +25,7 @@
 
 
 <script>
-  import {mapState, mapActions, mapGetters} from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import Product from './Product.vue';
 import config from '../../../config';
 
@@ -46,16 +46,16 @@ export default {
     ...mapState({
       products: state => state.products.products,
     }),
-    imageUrlConfig(){
+    imageUrlConfig() {
       return config.image;
-    }
+    },
   },
   mounted() {
     this.$store.dispatch('products/getAllProducts');
   },
   methods: {
     ...mapActions('cart', [
-            'addToCart',
+      'addToCart',
     ]),
   },
 };

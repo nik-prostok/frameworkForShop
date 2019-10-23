@@ -8,16 +8,19 @@
             <h5>
               Товары
             </h5>
+            <b-button-group>
+              <b-button variant="success" @click="setAddMode">Добавить</b-button>
+            </b-button-group>
           </b-row>
           <b-row>
             <list-products-for-admin />
           </b-row>
         </b-col>
-        <b-col v-if="!showEditProduct">
+        <b-col v-if="showAddProduct">
           <b-row class="m-3">
-            <h5>
+            <h6>
               Добавить товар
-            </h5>
+            </h6>
           </b-row>
           <b-row class="m-3">
             <add-product
@@ -25,13 +28,13 @@
             />
           </b-row>
         </b-col>
-        <b-col v-else>
+        <b-col v-if="showEditProduct">
           <b-row class="m-3">
             <h5>
               <font-awesome-icon
                 icon="arrow-left"
                 style="font-size: 1.5rem;"
-                @click="$store.commit('products/setIdEditProduct', null);"
+                @click="$store.commit('products/setIdEditProduct', null)"
               />
               Редактировать товар
             </h5>
@@ -70,15 +73,15 @@ export default {
   },
   computed: {
     ...mapState({
-      idEditProduct: state => state.products.idEditProduct,
+      showAddProduct: state => state.products.showAddProduct,
+      showEditProduct: state => state.products.showEditProduct,
     }),
-    showEditProduct() {
-      if (this.idEditProduct === null) {
-        return false;
-      }
-      return true;
-    },
   },
+  methods: {
+    setAddMode(){
+      this.$store.commit('products/setAddMode')
+    }
+  }
 };
 </script>
 

@@ -2,7 +2,7 @@
   <div class="product-admin">
     <b-card
       v-if="titleProduct && id"
-      class="card-product"
+      class="card-product shadow"
       :title="titleProduct"
     >
       <b-card-body>
@@ -119,5 +119,8 @@ export default {
     .image-product {
         width: 20%;
         height: auto;
+    }
+    .shadow:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Параметры тени */
     }
 </style>

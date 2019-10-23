@@ -9,14 +9,14 @@ export default {
       customer,
       product: {
         product,
-        count: 1
+        count: 1,
       },
     });
   },
   setCountPoint(customer, productID, count) {
-    return api.post(`/cart/${customer}/${productID}/${count}`);
+    return api.patch(`/cart/${customer}/${productID}/${count}`);
   },
-  deletePoint(customer, productID){
+  deletePoint(customer, productID) {
     return api.delete(`/cart/${customer}/${productID}`);
   },
   clearCart(customer) {

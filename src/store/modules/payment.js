@@ -7,12 +7,12 @@ const actions = {
     return new Promise((resolve, reject) => {
       payment.createPayment({ order })
         .then(resolve)
-        .catch(reject)
-    })
-  }
+        .catch(reject);
+    });
+  },
 };
 
 export default {
   namespaced: true,
-  actions
+  actions,
 };

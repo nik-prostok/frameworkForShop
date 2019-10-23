@@ -18,7 +18,7 @@
         <b-navbar-nav>
           <b-nav-item>
             <router-link
-              class="default-link"
+              class="default-link dark"
               active-class="active"
               exact-active-class="exact-active"
               to="/dashboard/products"
@@ -28,7 +28,7 @@
           </b-nav-item>
           <b-nav-item>
             <router-link
-              class="default-link"
+              class="default-link dark"
               active-class="active"
               exact-active-class="exact-active"
               to="/dashboard/categories"
@@ -36,6 +36,28 @@
               Категории
             </router-link>
           </b-nav-item>
+          <b-nav-item-dropdown text="Доставка">
+            <b-dropdown-item>
+              <router-link
+                      class="dark"
+                      active-class="active dark"
+                      exact-active-class="exact-active dark"
+                      to="/dashboard/delivery"
+              >
+                Управление способами доставками
+              </router-link>
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <router-link
+                      class="dark"
+                      active-class="active dark"
+                      exact-active-class="exact-active dark"
+                      to="/dashboard/delivery"
+              >
+                Управление городами доставки
+              </router-link>
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -99,8 +121,8 @@ export default {
 </script>
 
 <style scoped>
-  .active {
-    color: black;
+  .dark {
+    color: #000000;
   }
   .exact-active {
     color: gray;

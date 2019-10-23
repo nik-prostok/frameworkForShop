@@ -129,14 +129,14 @@ export default {
           .then((response) => {
             let count = false;
             this.urlName.forEach((name) => {
-              if (name === response.data) {
+              if (name === response.data.data) {
                 count = true;
               }
             });
-            if (!count) this.urlName.push(response.data);
+            if (!count) this.urlName.push(response.data.data);
           })
           .catch((err) => {
-            console.error(err);
+            // console.error(err);
           });
       });
       this.onAllUploadFile(this.urlName);
