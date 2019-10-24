@@ -5,10 +5,10 @@
       <b-row class="m-3">
         <b-col>
           <b-row>
-            <h5>
+            <h5 class="m-1">
               Товары
             </h5>
-            <b-button-group>
+            <b-button-group class="m-1">
               <b-button variant="success" @click="setAddMode">Добавить</b-button>
             </b-button-group>
           </b-row>
@@ -19,6 +19,11 @@
         <b-col v-if="showAddProduct">
           <b-row class="m-3">
             <h6>
+              <font-awesome-icon
+                      icon="arrow-left"
+                      style="font-size: 1.5rem; cursor: pointer;"
+                      @click="$store.commit('products/setDefaultMode')"
+              />
               Добавить товар
             </h6>
           </b-row>
@@ -30,14 +35,14 @@
         </b-col>
         <b-col v-if="showEditProduct">
           <b-row class="m-3">
-            <h5>
+            <h6>
               <font-awesome-icon
                 icon="arrow-left"
-                style="font-size: 1.5rem;"
-                @click="$store.commit('products/setIdEditProduct', null)"
+                style="font-size: 1.5rem; cursor: pointer;"
+                @click="$store.commit('products/setDefaultMode')"
               />
               Редактировать товар
-            </h5>
+            </h6>
           </b-row>
           <b-row class="m-3">
             <edit-product

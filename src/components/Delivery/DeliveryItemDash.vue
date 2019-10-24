@@ -12,10 +12,7 @@
                         Стоимость: {{deliveryType.price}}
                     </b-row>
                     <b-row v-if="deliveryType.underground !== []">
-                        Ближайшие метро:
-                        <div v-for="metro in deliveryType.underground">
-                            <a>{{metro}}</a>
-                        </div>
+                        {{undergroundStr}}
                     </b-row>
                     <b-row v-if="deliveryType.timeDelivery !== ''">
                         Время: {{deliveryType.timeDelivery}}
@@ -38,6 +35,19 @@
             deliveryType: {
                 required: true,
                 type: Object,
+            }
+        },
+        computed: {
+            undergroundStr(){
+                let str = 'Ближайшие метро: ';
+                this.deliveryType.underground.forEach((metro, index, arr) => {
+                    if (index < (arr.length - 1)){
+                        str += `${metro}, `;
+                    } else {
+                        str += metro;
+                    }
+                })
+                return str;
             }
         }
     }

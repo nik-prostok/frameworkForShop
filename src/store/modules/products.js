@@ -70,6 +70,10 @@ const mutations = {
             }
         });
     },
+    setDefaultMode: (state) => {
+        state.showEditProduct = false;
+        state.showAddProduct = false;
+    },
     setAddMode: (state) => {
         state.showEditProduct = false;
         state.showAddProduct = true;
