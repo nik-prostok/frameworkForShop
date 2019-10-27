@@ -8,9 +8,6 @@
             <h5 class="m-1">
               Товары
             </h5>
-            <b-button-group class="m-1">
-              <b-button variant="success" @click="setAddMode">Добавить</b-button>
-            </b-button-group>
           </b-row>
           <b-row>
             <list-products-for-admin />
@@ -82,11 +79,6 @@ export default {
       showEditProduct: state => state.products.showEditProduct,
     }),
   },
-  methods: {
-    setAddMode(){
-      this.$store.commit('products/setAddMode')
-    }
-  }
 };
 </script>
 

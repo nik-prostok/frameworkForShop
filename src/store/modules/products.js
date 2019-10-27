@@ -8,6 +8,7 @@ const state = {
     currentEditProduct: null,
     showEditProduct: false,
     showAddProduct: false,
+    isShowAddButton: false,
 };
 
 // getters
@@ -97,6 +98,13 @@ const mutations = {
             }
         });
     },
+    showAddButton: (state) => {
+        state.isShowAddButton = true;
+    },
+    hideAddButton: state => {
+        state.isShowAddButton = false;
+    }
+
 };
 
 export default {

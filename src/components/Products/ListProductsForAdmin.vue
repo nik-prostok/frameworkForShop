@@ -46,6 +46,10 @@
         },
         mounted() {
             this.$store.dispatch('products/getAllProducts');
+            this.$store.commit('products/showAddButton')
+        },
+        beforeDestroy() {
+            this.$store.commit('products/hideAddButton')
         },
         methods: {
             imagesURL(images) {

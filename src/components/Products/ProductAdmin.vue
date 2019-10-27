@@ -22,12 +22,6 @@
               :img-src="image"
             />
           </b-carousel>
-          <!--<lingallery
-                      v-if="images.length !== 0"
-                      :width="250"
-                      :height="150"
-                      :items="imagesForProduct"
-                    />-->
           <div v-else>
             <p>Нет фото</p>
           </div>
@@ -73,9 +67,6 @@
 
 export default {
   name: 'ProductAdmin',
-  /*  components: {
-    StarRating,
-  }, */
   props: {
     id: String,
     titleProduct: String,
@@ -87,8 +78,6 @@ export default {
     return {};
   },
   computed: {},
-  mounted() {
-  },
   methods: {
     deleteProduct() {
       this.$store.dispatch('products/deleteProduct', this.id)

@@ -62,19 +62,12 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
+          <b-button v-if="addProductButton" variant="success" @click="setAddModeForProduct" class="m-2" type="submit">Добавить</b-button>
+          <b-button v-if="addDeliveryButton" variant="success" @click="setAddModeForDelivery" class="m-2" type="submit">Добавить</b-button>
+
           <b-nav-form>
-            <b-form-input
-              size="sm"
-              class="mr-sm-2"
-              placeholder="Search"
-            />
-            <b-button
-              size="sm"
-              class="my-2 my-sm-0"
-              type="submit"
-            >
-              Search
-            </b-button>
+            <b-form-input class="mr-sm-2" placeholder="Search"></b-form-input>
+            <b-button variant="secondary" type="submit">Search</b-button>
           </b-nav-form>
 
           <b-nav-item-dropdown
@@ -115,8 +108,24 @@
 
 <script>
 
+import {mapState} from "vuex";
+
 export default {
   name: 'NavBar',
+  computed: {
+    ...mapState({
+      addProductButton: state => state.products.isShowAddButton,
+      addDeliveryButton: state => state.delivery.isShowAddButton,
+    }),
+  },
+  methods: {
+    setAddModeForProduct(){
+      this.$store.commit('products/setAddMode')
+    },
+    setAddModeForDelivery(){
+      this.$store.commit('delivery/setAddMode')
+    }
+  }
 };
 </script>
 

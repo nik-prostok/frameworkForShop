@@ -1,39 +1,36 @@
 <template>
     <div class="mt-3 list-delivery-dash container">
-        <b-row>
-            <b-form-select v-model="selectedCity" class="mb-3">
-                <option :value="null">Пожалуйста, выберите город</option>
-                <option v-for="city in cities" :value="city">{{city.city}}</option>
-            </b-form-select>
-        </b-row>
-        <b-row v-if="deliveryTypesForCity.length !== 0">
-            <div v-for="delivery in deliveryTypesForCity"
-                 :key="delivery._id"
-                 class="m-1"
-            >
-                <delivery-item-dash
-                        :deliveryType="delivery"/>
-            </div>
-        </b-row>
+        <select-city/>
+        <b-container>
+            <b-row v-if="deliveryTypesForCity.length !== 0">
+                <div v-for="delivery in deliveryTypesForCity"
+                     :key="delivery._id"
+                     class="m-1"
+                >
+                    <delivery-item-dash
+                            :deliveryType="delivery"/>
+                </div>
+            </b-row>
+        </b-container>
     </div>
 </template>
 <script>
     import {mapState} from 'vuex';
 
     import DeliveryItemDash from "./DeliveryItemDash.vue";
+    import SelectCity from "./SelectCity";
 
     export default {
         name: 'ListDeliveryDash',
         data() {
-            return {
-                selectedCity: null
-            }
+            return {}
         },
-        components: {DeliveryItemDash},
+        components: {SelectCity, DeliveryItemDash},
         computed: {
             ...mapState({
                 cities: state => state.delivery.deliveryCities,
                 deliveryTypes: state => state.delivery.deliveryTypes,
+                selectedCity: state => state.delivery.selectedCity,
             }),
             deliveryTypesForCity() {
                 if (this.selectedCity !== null){
@@ -50,7 +47,11 @@
         mounted() {
             this.$store.dispatch('delivery/getAllCities');
             this.$store.dispatch('delivery/getAllDeliveryTypes');
-        }
+            this.$store.commit('delivery/showAddButton')
+        },
+        beforeDestroy() {
+            this.$store.commit('delivery/hideAddButton')
+        },
     };
 </script>
 

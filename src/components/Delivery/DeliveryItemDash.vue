@@ -2,8 +2,17 @@
     <div class="delivery-item-dash">
         <b-card
                 class="shadow"
-                :title="deliveryType.nameDelivery"
         >
+                <b-card-title>
+                    <div class="d-flex flex-row justify-content-between">
+                        <h6>{{deliveryType.nameDelivery}}</h6>
+                        <i
+                                class="material-icons"
+                                style="cursor: pointer;"
+                                @click="deleteDelivery(deliveryType._id)"
+                        >close</i>
+                    </div>
+                </b-card-title>
                 <b-card-body>
                     <b-row v-if="deliveryType.address !== ''">
                         Адрес: {{deliveryType.address}}
@@ -35,6 +44,11 @@
             deliveryType: {
                 required: true,
                 type: Object,
+            }
+        },
+        methods: {
+            deleteDelivery(id){
+                this.$store.dispatch('delivery/deleteDeliveryById', id)
             }
         },
         computed: {
