@@ -1,8 +1,8 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
-    chainWebpack: config => {
-        config.resolve.alias
-            .set('@', path.resolve(__dirname, 'src'));
-    }
-}
+  chainWebpack: (config) => {
+    config.resolve.alias
+      .set('@', path.resolve(__dirname, 'src'));
+  },
+};

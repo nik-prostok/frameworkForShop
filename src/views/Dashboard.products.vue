@@ -17,9 +17,9 @@
           <b-row class="m-3">
             <h6>
               <font-awesome-icon
-                      icon="arrow-left"
-                      style="font-size: 1.5rem; cursor: pointer;"
-                      @click="$store.commit('products/setDefaultMode')"
+                icon="arrow-left"
+                style="font-size: 1.5rem; cursor: pointer;"
+                @click="$store.commit('products/setDefaultMode')"
               />
               Добавить товар
             </h6>

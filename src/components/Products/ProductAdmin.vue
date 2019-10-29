@@ -3,8 +3,26 @@
     <b-card
       v-if="titleProduct && id"
       class="card-product shadow"
-      :title="titleProduct"
     >
+      <b-card-title>
+        <div class="d-flex flex-row justify-content-between">
+          <div>
+            <h6>{{ titleProduct }}</h6>
+          </div>
+          <div>
+            <i
+              class="material-icons"
+              style="cursor: pointer;"
+              @click="deleteProduct"
+            >close</i>
+            <i
+              class="material-icons"
+              style="cursor: pointer;"
+              @click="editProduct"
+            >edit</i>
+          </div>
+        </div>
+      </b-card-title>
       <b-card-body>
         <b-row>
           <b-carousel
@@ -26,29 +44,29 @@
             <p>Нет фото</p>
           </div>
         </b-row>
-        <b-row class="d-flex flex-row">
-          <b-button
-            class="m-1"
-            variant="primary"
-            @click="editProduct"
-          >
-            Ред.
-          </b-button>
-          <b-button
-            class="m-1"
-            variant="danger"
-            @click="deleteProduct"
-          >
-            Удалить
-          </b-button>
-        </b-row>
-        <!--<b-row>
-                  <star-rating
-                    :star-size="20"
-                    :read-only="true"
-                    :rating="ratingProduct"
-                  />
+        <!--<b-row class="d-flex flex-row">
+                    <b-button
+                            class="m-1"
+                            variant="primary"
+                            @click="editProduct"
+                    >
+                        Ред.
+                    </b-button>
+                    <b-button
+                            class="m-1"
+                            variant="danger"
+                            @click="deleteProduct"
+                    >
+                        Удалить
+                    </b-button>
                 </b-row>-->
+        <!--<b-row>
+                          <star-rating
+                            :star-size="20"
+                            :read-only="true"
+                            :rating="ratingProduct"
+                          />
+                        </b-row>-->
         <b-row class="mt-3">
           <b-col v-if="avlCount !== undefined">
             <p>Осталось: {{ avlCount }} шт</p>
@@ -109,7 +127,8 @@ export default {
         width: 20%;
         height: auto;
     }
+
     .shadow:hover {
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Параметры тени */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Параметры тени */
     }
 </style>

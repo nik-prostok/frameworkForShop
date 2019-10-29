@@ -1,12 +1,12 @@
 <template>
-  <div class="add-type-delivery container">
+  <div class="edit-type-delivery container">
     <h5 class="container">
       <font-awesome-icon
         icon="arrow-left"
         style="font-size: 1.5rem; cursor: pointer;"
         @click="$store.commit('delivery/setDefaultMode')"
       />
-      Добавить доставку
+      Редактировать доставку
     </h5>
     <b-card class="shadow">
       <b-form>
@@ -123,7 +123,7 @@
         <b-button
           variant="success"
           class="m-1"
-          @click="submitNewProduct"
+          @click="submitNewDeliveryType"
         >
           Сохранить
         </b-button>
@@ -131,6 +131,7 @@
           type="reset"
           variant="danger"
           class="m-1"
+          @click="onReset"
         >
           Сбросить
         </b-button>
@@ -140,10 +141,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import SelectCity from './SelectCity';
+import { deepCopy } from '../../util';
 
 export default {
-  name: 'AddTypeDelivery',
+  name: 'EditTypeDelivery',
   components: { SelectCity },
   data() {
     return {
@@ -151,7 +154,7 @@ export default {
         underground: [''],
         idTypeDelivery: 1,
         nameDelivery: '',
-        city: '5db1deeb7fdc9f1f0ccea293',
+        city: null,
         address: '',
         price: 0,
         openingHours: '',
@@ -159,6 +162,10 @@ export default {
         message: '',
       },
     };
+  },
+  mounted() {
+    this.deliveryType = deepCopy(this.currentEditDelivery);
+    this.$store.commit('delivery/selectCity', this.deliveryType.city);
   },
   methods: {
     addFieldForKeyword() {
@@ -187,12 +194,12 @@ export default {
         variant,
       });
     },
-    submitNewProduct() {
+    submitNewDeliveryType() {
       this.deliveryType.city = this.$store.state.delivery.selectedCity.city;
-      this.$store.dispatch('delivery/saveDelivery', this.deliveryType)
+      this.$store.dispatch('delivery/patchDelivery', { deliveryType: this.deliveryType })
         .then(() => {
           this.$store.dispatch('delivery/getAllCities');
-          this.makeToast('Доставка была успешно добавлена', 'Успешно', 'success');
+          this.makeToast('Доставка была успешно обновлена', 'Успешно', 'success');
         })
         .catch((err) => {
           console.log(err);
@@ -200,5 +207,14 @@ export default {
         });
     },
   },
+  computed: {
+    ...mapState({
+      currentEditDelivery: state => state.delivery.currentEditDelivery,
+    }),
+  },
 };
 </script>
+
+<style scoped>
+
+</style>

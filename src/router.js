@@ -3,9 +3,10 @@ import Router from 'vue-router';
 
 import Store from './views/Shop.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
-import DashboardProductsView from './views/Dashboard.products.view.vue';
-import DashboardCategoriesView from './views/Dashboard.categories.view.vue';
-import DashboardDeliveryView from './views/Dashboard.delivery.view';
+import DashboardProductsView from './views/Dashboard.products.vue';
+import DashboardCategoriesView from './views/Dashboard.categories.vue';
+import DashboardDeliveryView from './views/Dashboard.delivery';
+import DashboardCityView from './views/Dashboard.city';
 import Auth from './views/Auth.vue';
 import Payment from './views/TestPaymentConfirmation';
 
@@ -57,6 +58,11 @@ export default new Router({
       path: '/dashboard/delivery',
       name: 'dashboardDelivery',
       component: DashboardDeliveryView,
+    },
+    {
+      path: '/dashboard/city',
+      name: 'dashboardCity',
+      component: DashboardCityView,
     },
     {
       path: '/Auth',

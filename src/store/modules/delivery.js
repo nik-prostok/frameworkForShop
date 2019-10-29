@@ -1,109 +1,188 @@
-import delivery from '../../api/delivery.api';
-import {products} from "../../api/api";
+import { delivery, city } from '../../api/api';
+import id from "bootstrap-vue/esm/mixins/id";
+import {flattenArray} from "less/lib/less/utils";
 
 const state = {
-    deliveryTypes: [],
-    deliveryCities: [],
-    deliveryTypesForCity: {},
-    selectedCity: null,
-    idEditDelivery: null,
-    currentEditDelivery: null,
-    showEditDelivery: false,
-    showAddDelivery: false,
-    isShowAddButton: false,
+  deliveryTypes: [],
+  deliveryCities: [],
+  deliveryTypesForCity: {},
+  selectedCity: null,
+  idEditDelivery: null,
+  currentEditDelivery: null,
+  showEditDelivery: false,
+  showAddDelivery: false,
+  isShowAddButton: false,
+  isShowAddCityButton: false,
 };
 
 const getters = {};
 
-const actions ={
-    async getAllDeliveryTypes({ commit }) {
-        await delivery.getTypesDelivery()
-            .then((res) => {
-                if (res.data.status === 'OK') {
-                    commit('setDeliveryTypes', res.data.data)
-                }
-            })
-    },
-    async getAllCities({ commit }) {
-        await delivery.getAllCities()
-            .then((res) => {
-                if (res.data.status === 'OK') {
-                    commit('setCities', res.data.data)
-                }
-            })
-    },
-    async deleteDeliveryById({ commit }, deliveryID) {
-        await delivery.deleteDeliveryById(deliveryID)
-            .then(res => {
-                if (res.data.status === 'OK') {
-                    commit('deleteDeliveryById', deliveryID)
-                }
-            })
-    },
-    async saveDelivery({commit}, deliveryData) {
-        await delivery.createTypeDelivery(deliveryData)
-            .then((res) => {
-                if (res.data.status === 'OK') {
-                    commit('addDelivery', res.data.data)
-                }
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    },
-}
+const actions = {
+  async getAllDeliveryTypes({ commit }) {
+    await delivery.getTypesDelivery()
+      .then((res) => {
+        if (res.data.status === 'OK') {
+          commit('setDeliveryTypes', res.data.data);
+        }
+      });
+  },
+  async getAllCities({ commit }) {
+    await city.getAllCities()
+      .then((res) => {
+        if (res.data.status === 'OK') {
+          commit('setCities', res.data.data);
+        }
+      });
+  },
+  async deleteDeliveryById({ commit }, deliveryID) {
+    await delivery.deleteDeliveryById(deliveryID)
+      .then((res) => {
+        if (res.data.status === 'OK') {
+          commit('deleteDeliveryById', deliveryID);
+        }
+      });
+  },
+  async saveDelivery({ commit }, deliveryData) {
+    await delivery.createTypeDelivery(deliveryData)
+      .then((res) => {
+        if (res.data.status === 'OK') {
+          commit('addDelivery', res.data.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  async patchDelivery({ commit, state }, { deliveryType }) {
+    await delivery.patchDelivery(deliveryType, state.idEditDelivery)
+      .then((res) => {
+        if (res.data.status === 'OK') {
+          commit('updateDelivery', { delivery: res.data.data, id: state.idEditDelivery });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  async deleteCity({commit}, { idCity }){
+    await city.deleteCity(idCity)
+        .then((res) => {
+          if (res.data.status === 'OK') {
+            commit('deleteCity', idCity);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  },
+  async patchCity({ commit }, { idCity, newName }){
+    await city.patchCity({ idCity, newName })
+        .then(res => {
+          if (res.data.status === 'OK') {
+            commit('patchCity', { idCity, newName })
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  },
+  async addCity({ commit }, name){
+    await city.addCity(name)
+        .then(res => {
+          console.log(res)
+          if (res.data.status === 'OK') {
+            commit('addCity', res.data.data)
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  },
+};
 
 const mutations = {
-    selectCity(state, city){
-        state.selectedCity = city;
-    },
-    addDelivery(state, deliveryTypes) {
-      state.deliveryTypes = deliveryTypes;
-    },
-    setDeliveryTypes(state, deliveryTypes){
-        state.deliveryTypes = deliveryTypes;
-    },
-    setCities(state, cities){
-        state.deliveryCities = cities;
-    },
-    deleteDeliveryById({commit}, deliveryID) {
-        state.deliveryTypes = state.deliveryTypes.filter(type => {
-            if (type._id === deliveryID) {
-                return false;
-            }
-            return true;
-        })
-    },
-    showAddButton: (state) => {
-        state.isShowAddButton = true;
-    },
-    hideAddButton: state => {
-        state.isShowAddButton = false;
-    },
-    setEditMode: (state) => {
-        state.showAddDelivery = false;
-        state.showEditDelivery = true;
-        /*state.products.forEach((product) => {
-            // eslint-disable-next-line no-underscore-dangle
-            if (product._id === state.idEditProduct) {
-                state.currentEditProduct = product;
-            }
-        });*/
-    },
-    setDefaultMode: (state) => {
-        state.showEditDelivery = false;
-        state.showAddDelivery = false;
-    },
-    setAddMode: (state) => {
-        state.showEditDelivery = false;
-        state.showAddDelivery = true;
-    },
-}
+  addCity(state, city) {
+    state.deliveryCities.push(city);
+  },
+  deleteCity(state, idCity) {
+    state.deliveryCities = state.deliveryCities.filter(city => {
+      if (city._id === idCity) {
+        return false;
+      }
+      return true;
+    })
+  },
+  patchCity(state, { idCity, newName}){
+    state.deliveryCities = state.deliveryCities.map(city => {
+      if (city._id === idCity) {
+        city.city = newName;
+      }
+      return city;
+    });
+  },
+  selectCity(state, city) {
+    state.selectedCity = city;
+  },
+  addDelivery(state, deliveryTypes) {
+    state.deliveryTypes = deliveryTypes;
+  },
+  setDeliveryTypes(state, deliveryTypes) {
+    state.deliveryTypes = deliveryTypes;
+  },
+  setCities(state, cities) {
+    state.deliveryCities = cities;
+  },
+  deleteDeliveryById({ commit }, deliveryID) {
+    state.deliveryTypes = state.deliveryTypes.filter((type) => {
+      if (type._id === deliveryID) {
+        return false;
+      }
+      return true;
+    });
+  },
+  showAddButton: (state) => {
+    state.isShowAddButton = true;
+  },
+  hideAddButton: (state) => {
+    state.isShowAddButton = false;
+  },
+  showAddCityButton: (state) => {
+    state.isShowAddCityButton = true;
+  },
+  hideAddCityButton: (state) => {
+    state.isShowAddCityButton = false;
+  },
+  updateDelivery: (state, { delivery, id }) => {
+    state.deliveryTypes = [
+      ...state.deliveryTypes.filter(element => element._id !== id),
+      delivery,
+    ];
+    state.showEditDelivery = false;
+  },
+  setEditMode: (state, { idEditDelivery }) => {
+    state.idEditDelivery = idEditDelivery;
+    state.deliveryTypes.forEach((deliveryType) => {
+      if (deliveryType._id === state.idEditDelivery) {
+        state.currentEditDelivery = deliveryType;
+      }
+    });
+    state.showAddDelivery = false;
+    state.showEditDelivery = true;
+  },
+  setDefaultMode: (state) => {
+    state.showEditDelivery = false;
+    state.showAddDelivery = false;
+  },
+  setAddMode: (state) => {
+    state.showEditDelivery = false;
+    state.showAddDelivery = true;
+  },
+};
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations,
-}
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations,
+};

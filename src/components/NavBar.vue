@@ -37,22 +37,22 @@
             </router-link>
           </b-nav-item>
           <b-nav-item-dropdown text="Доставка">
-            <b-dropdown-item>
+            <b-dropdown-item @click="routerPush('delivery')">
               <router-link
-                      class="dark"
-                      active-class="active dark"
-                      exact-active-class="exact-active dark"
-                      to="/dashboard/delivery"
+                class="dark"
+                active-class="active dark"
+                exact-active-class="exact-active dark"
+                to="/dashboard/delivery"
               >
                 Управление способами доставками
               </router-link>
             </b-dropdown-item>
-            <b-dropdown-item>
+            <b-dropdown-item @click="routerPush('city')">
               <router-link
-                      class="dark"
-                      active-class="active dark"
-                      exact-active-class="exact-active dark"
-                      to="/dashboard/delivery"
+                class="dark"
+                active-class="active dark"
+                exact-active-class="exact-active dark"
+                to="/dashboard/delivery"
               >
                 Управление городами доставки
               </router-link>
@@ -62,13 +62,58 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-button v-if="addProductButton" variant="success" @click="setAddModeForProduct" class="m-2" type="submit">Добавить</b-button>
-          <b-button v-if="addDeliveryButton" variant="success" @click="setAddModeForDelivery" class="m-2" type="submit">Добавить</b-button>
+          <div>
+            <b-button
+                    v-if="addProductButton"
+                    variant="success"
+                    class="m-2"
+                    type="submit"
+                    @click="setAddModeForProduct"
+            >
+              Добавить
+            </b-button>
+          </div>
 
-          <b-nav-form>
-            <b-form-input class="mr-sm-2" placeholder="Search"></b-form-input>
-            <b-button variant="secondary" type="submit">Search</b-button>
-          </b-nav-form>
+          <div>
+            <b-button
+                    v-if="addDeliveryButton"
+                    variant="success"
+                    class="m-2"
+                    type="submit"
+                    @click="setAddModeForDelivery"
+            >
+              Добавить
+            </b-button>
+          </div>
+
+          <div>
+            <b-button
+                    v-if="addCityButton"
+                    variant="success"
+                    class="m-2"
+                    type="submit"
+                    v-b-modal.modal-add-city
+            >
+              Добавить
+            </b-button>
+
+            <b-modal id="modal-add-city" title="Добавление города">
+              <b-card>
+                <b-row>
+                  <b-form-group label="Новое название города">
+                    <b-form-input v-model="nameNewCity"/>
+                  </b-form-group>
+                </b-row>
+                <b-row>
+                  <b-button variant="outline-success" @click="addNewCity">
+                    Сохранить
+                  </b-button>
+                </b-row>
+              </b-card>
+            </b-modal>
+          </div>
+
+          <select-city class="mt-2" />
 
           <b-nav-item-dropdown
             text="Lang"
@@ -108,35 +153,53 @@
 
 <script>
 
-import {mapState} from "vuex";
+import { mapState } from 'vuex';
+import SelectCity from './Delivery/SelectCity';
 
 export default {
   name: 'NavBar',
+  components: { SelectCity },
+  data() {
+    return {
+      nameNewCity: ''
+    }
+  },
   computed: {
     ...mapState({
       addProductButton: state => state.products.isShowAddButton,
       addDeliveryButton: state => state.delivery.isShowAddButton,
+      addCityButton: state => state.delivery.isShowAddCityButton,
     }),
   },
   methods: {
-    setAddModeForProduct(){
-      this.$store.commit('products/setAddMode')
+    setAddModeForProduct() {
+      this.$store.commit('products/setAddMode');
     },
-    setAddModeForDelivery(){
-      this.$store.commit('delivery/setAddMode')
+    setAddModeForDelivery() {
+      this.$store.commit('delivery/setAddMode');
+    },
+    routerPush(route) {
+      this.$router.push(route);
+    },
+    addNewCity() {
+      if (this.nameNewCity.length !== 0){
+        this.$store.dispatch('delivery/addCity', this.nameNewCity);
+      }
     }
-  }
+  },
 };
 </script>
 
 <style scoped>
-  .dark {
-    color: #000000;
-  }
-  .exact-active {
-    color: gray;
-  }
-  .default-link{
-    color: azure;
-  }
+    .dark {
+        color: #000000;
+    }
+
+    .exact-active {
+        color: gray;
+    }
+
+    .default-link {
+        color: azure;
+    }
 </style>

@@ -15,7 +15,7 @@ const actions = {
   async saveCategory({ commit }, category) {
     await categories.saveCategory(category)
       .then((res) => {
-          commit('addNewCategory', res.data.data);
+        commit('addNewCategory', res.data.data);
       });
   },
   async getAllCategories({ commit }) {

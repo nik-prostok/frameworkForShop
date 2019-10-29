@@ -313,8 +313,6 @@ export default {
   watch: {
     editProductCurrent(newValue, oldValue) {
       console.log(`Updating from ${oldValue} to ${newValue}`);
-
-      // Do whatever makes sense now
       this.editProduct = deepCopy(this.editProductCurrent);
     },
   },
