@@ -1,9 +1,9 @@
 <template>
     <div class="dashboard-city">
         <nav-bar/>
-        <div class="content">
+        <b-container>
             <list-city-dash/>
-        </div>
+        </b-container>
     </div>
 </template>
 

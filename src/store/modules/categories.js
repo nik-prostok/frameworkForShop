@@ -18,6 +18,12 @@ const actions = {
         commit('addNewCategory', res.data.data);
       });
   },
+  async updateCategory({ commit }, { id, category }) {
+    await categories.patchCategory({ id, category })
+        .then((res) => {
+          commit('updateCategory', res.data.data);
+        });
+  },
   async getAllCategories({ commit }) {
     await categories.getCategories()
       .then((res) => {
@@ -47,6 +53,16 @@ const mutations = {
   setCategoriesWithoutNewCat(state, categories) {
     state.categoriesWithoutNewCat = categories;
   },
+  updateCategory(state, {id, category}) {
+    state.categories = [
+      ...state.categories.filter(element => element.id !== id),
+      category,
+    ];
+    state.categoriesWithoutNewCat = [
+      ...state.categoriesWithoutNewCat.filter(element => element.id !== id),
+      category,
+    ];
+  }
 };
 
 export default {

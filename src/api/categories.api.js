@@ -7,4 +7,7 @@ export default {
   saveCategory(category) {
     return api.post('/categories', category);
   },
+  patchCategory({ id, category }) {
+    return api.patch(`/categories/${id}`, category);
+  }
 };

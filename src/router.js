@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import AddCategory from "./components/Categories/AddCategory";
+
 import Store from './views/Shop.vue';
 import NotFoundPage from './components/NotFoundPage.vue';
 import DashboardProductsView from './views/Dashboard.products.vue';
@@ -53,6 +55,11 @@ export default new Router({
       path: '/dashboard/categories',
       name: 'dashboardCategories',
       component: DashboardCategoriesView,
+    },
+    {
+      path: '/dashboard/categories/add',
+      name: 'dashboardCategoriesAdd',
+      component: AddCategory,
     },
     {
       path: '/dashboard/delivery',

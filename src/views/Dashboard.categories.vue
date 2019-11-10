@@ -1,24 +1,20 @@
 <template>
   <div id="dashboard-categories">
     <nav-bar />
-    <div class="content">
-      <b-row>
-        <b-col class="col-3">
-          <add-category />
-        </b-col>
-      </b-row>
-    </div>
+    <b-container class="content">
+      <list-categories/>
+    </b-container>
   </div>
 </template>
 
 <script>
-import AddCategory from '../components/Categories/AddCategory.vue';
 import NavBar from '../components/NavBar.vue';
+import ListCategories from "../components/Categories/ListCategories";
 
 export default {
   name: 'DashboardCategoriesView',
   components: {
-    AddCategory,
+    ListCategories,
     NavBar,
   },
   data() {
