@@ -166,6 +166,9 @@ export default {
   mounted() {
     this.deliveryType = deepCopy(this.currentEditDelivery);
     this.$store.commit('delivery/selectCity', this.deliveryType.city);
+    if (this.deliveryType.underground.length === 0) {
+      this.deliveryType.underground.push('');
+    }
   },
   methods: {
     addFieldForKeyword() {
