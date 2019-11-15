@@ -1,14 +1,23 @@
 import { delivery, city } from '../../api/api';
-import id from "bootstrap-vue/esm/mixins/id";
-import {flattenArray} from "less/lib/less/utils";
+
 
 const state = {
   deliveryTypes: [],
   deliveryCities: [],
   deliveryTypesForCity: {},
-  selectedCity: null,
+
+  // Убрать в проде!
+  selectedCity: {
+    _id: "5db87c7de14132115089f0b6",
+    city: 'МОСКВА1'
+  },
+  selectedTypeDelivery: {
+    id: 0
+  },
+
   idEditDelivery: null,
   currentEditDelivery: null,
+
   showEditDelivery: false,
   showAddDelivery: false,
   isShowAddButton: false,
@@ -43,6 +52,9 @@ const actions = {
       });
   },
   async saveDelivery({ commit }, deliveryData) {
+    if ((deliveryData.underground.length === 1) && (deliveryData.underground[0] === '')){
+      deliveryData.underground = [];
+    }
     await delivery.createTypeDelivery(deliveryData)
       .then((res) => {
         if (res.data.status === 'OK') {
@@ -101,6 +113,9 @@ const actions = {
 };
 
 const mutations = {
+  setTypeDelivery(state, typeDelivery){
+    state.selectedTypeDelivery = typeDelivery;
+  },
   addCity(state, city) {
     state.deliveryCities.push(city);
   },

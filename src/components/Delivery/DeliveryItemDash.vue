@@ -29,7 +29,7 @@
         <b-row v-if="deliveryType.price !== ''">
           Стоимость: {{ deliveryType.price }}
         </b-row>
-        <b-row v-if="deliveryType.underground !== []">
+        <b-row v-if="deliveryType.underground.length">
           {{ undergroundStr }}
         </b-row>
         <b-row v-if="deliveryType.timeDelivery !== ''">

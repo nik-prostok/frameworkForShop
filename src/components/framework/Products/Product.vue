@@ -60,7 +60,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import StarRating from '../Rating/star-rating.vue';
+import StarRating from '../../Rating/star-rating.vue';
 
 export default {
   name: 'Product',
@@ -80,14 +80,16 @@ export default {
       cart: 'cartProducts',
     }),
     alreadyInCart() {
-      if (this.cart.find((cartItem) => {
-        if (cartItem.product._id === this.product._id) {
-          return true;
+      if (this.cart !== undefined) {
+        if (this.cart.find((cartItem) => {
+          if (cartItem.product._id === this.product._id) {
+            return true;
+          }
+        })) {
+          return false;
         }
-      })) {
-        return false;
-      }
-      return true;
+        return true;
+      } else return true;
     },
     imagesURL() {
       return this.product.images.map(image => `${this.imageUrlConfig}/${image}`);

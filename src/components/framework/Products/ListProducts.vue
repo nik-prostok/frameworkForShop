@@ -27,7 +27,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import Product from './Product.vue';
-import config from '../../../config';
+import config from '../../../../config';
 
 export default {
   name: 'ListProducts',

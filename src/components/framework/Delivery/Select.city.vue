@@ -2,7 +2,7 @@
   <div class="select-city">
     <b-row>
       <b-container>
-        <b-form-select v-model="selectedCity">
+        <b-form-select v-model="selectedCity" :autofocus="true">
           <option :value="null">
             Пожалуйста, выберите город
           </option>
@@ -23,10 +23,6 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'SelectCity',
-  mounted(){
-    this.$store.dispatch('delivery/getAllCities');
-    this.$store.dispatch('delivery/getAllDeliveryTypes')
-  },
   computed: {
     ...mapState({
       cities: state => state.delivery.deliveryCities,
